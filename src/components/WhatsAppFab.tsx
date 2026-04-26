@@ -1,7 +1,7 @@
 export function WhatsAppFab() {
   return (
     <a
-      href="https://wa.me/5562994896602"
+      href="https://api.whatsapp.com/send/?phone=55556299981212"
       target="_blank"
       rel="noreferrer"
       aria-label="Fale conosco no WhatsApp"
