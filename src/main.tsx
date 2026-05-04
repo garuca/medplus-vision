@@ -29,7 +29,6 @@ import AdminAjuda from "./pages/admin/Ajuda";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { WhatsAppFab } from "./components/WhatsAppFab";
-import { DataSourceIndicator } from "./components/DataSourceIndicator";
 import { CartProvider } from "./context/CartContext";
 
 function AdminRoutes() {
@@ -95,7 +94,6 @@ function App() {
         </main>
         {!isAdmin && <Footer />}
         {!isAdmin && <WhatsAppFab />}
-        {!isAdmin && <DataSourceIndicator />}
       </div>
     </CartProvider>
   );

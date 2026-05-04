@@ -1,7 +1,16 @@
 import { Link } from "wouter";
 import { useEffect, useState } from "react";
-import { Menu, X, Search, ShoppingCart, User, Phone, MessageCircle, ChevronDown } from "lucide-react";
-import logo from "../assets/medplus-logo-transparente2.png";
+import {
+  Menu,
+  X,
+  Search,
+  ShoppingCart,
+  User,
+  Phone,
+  MessageCircle,
+  ChevronDown,
+} from "lucide-react";
+import { placeholderImages } from "../lib/images";
 import { useCart } from "../context/CartContext";
 
 const links = [
@@ -55,11 +64,19 @@ export function Header() {
       <div className="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-2 px-4">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
           <div className="flex items-center gap-4">
-            <a href="tel:+556235199974" className="flex items-center gap-1.5 hover:text-cyan-100 transition">
+            <a
+              href="tel:+556235199974"
+              className="flex items-center gap-1.5 hover:text-cyan-100 transition"
+            >
               <Phone className="h-3.5 w-3.5" />
               <span>(62) 3519-9974</span>
             </a>
-            <a href="https://api.whatsapp.com/send/?phone=55556299981212" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-cyan-100 transition">
+            <a
+              href="https://api.whatsapp.com/send/?phone=55556299981212"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 hover:text-cyan-100 transition"
+            >
               <MessageCircle className="h-3.5 w-3.5" />
               <span>Compre pelo WhatsApp</span>
             </a>
@@ -71,12 +88,20 @@ export function Header() {
       </div>
 
       {/* Main Header */}
-      <div className={`bg-white/80 backdrop-blur-xl border-b border-gray-100 ${scrolled ? "py-2 shadow-lg shadow-gray-100/50" : "py-3"}`}>
+      <div
+        className={`bg-white/80 backdrop-blur-xl border-b border-gray-100 ${scrolled ? "py-2 shadow-lg shadow-gray-100/50" : "py-3"}`}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
-              <img src={logo} alt="MedPlus Hospitalar" className="h-10 w-auto" width={140} height={40} />
+              <img
+                src={placeholderImages.logo}
+                alt="MedPlus Hospitalar"
+                className="h-10 w-auto"
+                width={140}
+                height={40}
+              />
             </Link>
 
             {/* Search Bar */}
@@ -90,7 +115,10 @@ export function Header() {
                   className="w-full rounded-full border border-gray-200 bg-gray-50 px-5 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition"
                 />
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <button type="submit" className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-1.5 rounded-full text-sm font-medium transition">
+                <button
+                  type="submit"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-1.5 rounded-full text-sm font-medium transition"
+                >
                   Buscar
                 </button>
               </div>
@@ -98,7 +126,10 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Link to="/minha-conta" className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition">
+              <Link
+                to="/minha-conta"
+                className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition"
+              >
                 <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
                   <User className="h-4 w-4 text-gray-600" />
                 </div>
@@ -108,7 +139,10 @@ export function Header() {
                 </div>
               </Link>
 
-              <Link to="/carrinho" className="relative p-2.5 rounded-lg hover:bg-gray-50 transition">
+              <Link
+                to="/carrinho"
+                className="relative p-2.5 rounded-lg hover:bg-gray-50 transition"
+              >
                 <ShoppingCart className="h-5 w-5 text-gray-700" />
                 {totaleItens > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500 text-xs font-bold text-white">
@@ -117,7 +151,10 @@ export function Header() {
                 )}
               </Link>
 
-              <button className="md:hidden p-2 rounded-lg hover:bg-gray-50" onClick={() => setOpen((v) => !v)}>
+              <button
+                className="md:hidden p-2 rounded-lg hover:bg-gray-50"
+                onClick={() => setOpen((v) => !v)}
+              >
                 {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
@@ -151,7 +188,9 @@ export function Header() {
               >
                 <Menu className="h-4 w-4" />
                 Todas as Categorias
-                <ChevronDown className={`h-4 w-4 transition-transform ${showCategorias ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform ${showCategorias ? "rotate-180" : ""}`}
+                />
               </button>
 
               {/* Categories Dropdown */}
@@ -178,7 +217,6 @@ export function Header() {
                   key={l.to}
                   to={l.to}
                   className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-cyan-600 hover:bg-gray-50 rounded-lg transition"
-                  activeProps={{ className: "text-cyan-600 font-semibold" }}
                 >
                   {l.label}
                 </Link>

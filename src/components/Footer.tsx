@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
-import logo from "../assets/medplus-logo-transparente2.png";
+import { placeholderImages } from "../lib/images";
 
 export function Footer() {
   return (
@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-1">
             <img
-              src={logo}
+              src={placeholderImages.logo}
               alt="MedPlus Hospitalar"
               className="h-12 w-auto"
               width={140}
@@ -111,10 +111,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-white/60 pt-6 text-xs text-muted-foreground md:flex-row">
-          <p>
-            © 2026 MedPlus Hospitalar Comércio e Serviços LTDA. Todos os
-            direitos reservados.
-          </p>
+          <p>© 2026 MedPlus Hospitalar Comércio e Serviços LTDA. Todos os direitos reservados.</p>
           <p>CNPJ 34.075.280/0001-19</p>
         </div>
       </div>

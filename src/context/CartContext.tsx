@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface Produto {
   id: string;
@@ -33,8 +33,34 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const CART_STORAGE_KEY = "medplus_carrinho";
+
+function loadCartFromStorage(): ItemCarrinho[] {
+  try {
+    const saved = localStorage.getItem(CART_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (e) {
+    console.error("Erro ao carregar carrinho do localStorage:", e);
+  }
+  return [];
+}
+
+function saveCartToStorage(itens: ItemCarrinho[]) {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(itens));
+  } catch (e) {
+    console.error("Erro ao salvar carrinho no localStorage:", e);
+  }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [itens, setItens] = useState<ItemCarrinho[]>([]);
+  const [itens, setItens] = useState<ItemCarrinho[]>(() => loadCartFromStorage());
+
+  useEffect(() => {
+    saveCartToStorage(itens);
+  }, [itens]);
 
   const adicionarProduto = (produto: Produto, quantidade = 1) => {
     setItens((prev) => {
@@ -43,7 +69,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return prev.map((item) =>
           item.produto.id === produto.id
             ? { ...item, quantidade: item.quantidade + quantidade }
-            : item
+            : item,
         );
       }
       return [...prev, { produto, quantidade }];
@@ -60,9 +86,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return;
     }
     setItens((prev) =>
-      prev.map((item) =>
-        item.produto.id === id ? { ...item, quantidade } : item
-      )
+      prev.map((item) => (item.produto.id === id ? { ...item, quantidade } : item)),
     );
   };
 
@@ -70,10 +94,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totaleItens = itens.reduce((acc, item) => acc + item.quantidade, 0);
   const subtotal = itens.reduce(
-    (acc, item) =>
-      acc +
-      (item.produto.precoPromocional || item.produto.preco) * item.quantidade,
-    0
+    (acc, item) => acc + (item.produto.precoPromocional || item.produto.preco) * item.quantidade,
+    0,
   );
 
   return (

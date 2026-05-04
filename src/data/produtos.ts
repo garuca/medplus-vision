@@ -1,170 +1,177 @@
-import produto1 from "../assets/produto1.webp";
-import produto2 from "../assets/produto2.webp";
-import produto3 from "../assets/produto3.webp";
-import produto4 from "../assets/produto4.webp";
-import produto5 from "../assets/produto5.webp";
-import produto6 from "../assets/produto6.webp";
-import produto7 from "../assets/produto7.webp";
-import produto8 from "../assets/produto8.webp";
-import produto9 from "../assets/produto9.webp";
-import produto10 from "../assets/produto10.webp";
+const placeholderImg = "/medpluscomerciohospitalar/";
 
 export const products = [
   {
     id: "1",
     nome: "Máscara Laríngea de PVC - Todos os Tamanhos",
-    descricao: "A Máscara Laríngea de PVC possui alta qualidade e é indicada para controlar as vias aéreas durante emergências ou procedimentos cirúrgicos com ventilação espontânea ou controlada.",
+    descricao:
+      "A Máscara Laríngea de PVC possui alta qualidade e é indicada para controlar as vias aéreas durante emergências ou procedimentos cirúrgicos com ventilação espontânea ou controlada.",
     preco: 22.0,
     precoPromocional: 21.56,
-    imagem: produto1,
+    imagem:
+      "/medpluscomerciohospitalar/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
     categoria: "urgencia-emergencia",
     marca: "MedPlus",
     sku: "MLP001",
     estoque: 100,
     especificacoes: {
-      "Material": "PVC de alta qualidade",
-      "Tamanhos": "1, 1.5, 2, 2.5, 3, 4, 5",
-      "Características": "Formato elíptico com punho de vedação flexível",
-      "Conector": "Universal transparente de 15mm",
-      "Válvula": "Código de cores para rápida identificação",
-      "Látex": "Isento de látex",
-      "Uso": "Uso único",
-      "Validade": "5 anos"
-    }
+      Material: "PVC de alta qualidade",
+      Tamanhos: "1, 1.5, 2, 2.5, 3, 4, 5",
+      Características: "Formato elíptico com punho de vedação flexível",
+      Conector: "Universal transparente de 15mm",
+      Válvula: "Código de cores para rápida identificação",
+      Látex: "Isento de látex",
+      Uso: "Uso único",
+      Validade: "5 anos",
+    },
   },
   {
     id: "2",
     nome: "Tubo Sonda Endotraqueal com Balão - Cuff - Todos Tamanhos",
-    descricao: "Tubo endotraqueal de alta qualidade e confiabilidade para intubação precisa e segura. Projetado para garantir desempenho excepcional e segurança inigualável.",
+    descricao:
+      "Tubo endotraqueal de alta qualidade e confiabilidade para intubação precisa e segura. Projetado para garantir desempenho excepcional e segurança inigualável.",
     preco: 10.0,
     precoPromocional: 4.0,
-    imagem: produto2,
+    imagem:
+      "/medpluscomerciohospitalar/tubo_sonda_endotraqueal_com_balao_2249_1_afd2596d447d58e9ff052e3227147b4a.webp",
     categoria: "urgencia-emergencia",
     marca: "MedPlus",
     sku: "TSE001",
     estoque: 200,
     especificacoes: {
-      "Material": "PVC termoplástico de alta qualidade",
+      Material: "PVC termoplástico de alta qualidade",
       "Marcador de RX": "Sim",
       "Olho de Murphy": "Sim",
-      "Graduação": "Sim",
+      Graduação: "Sim",
       "Marcadores de Profundidade": "Sim",
       "Tamanho Marcado": "Sim",
-      "Conector": "Ø 15mm",
-      "Cuff": "Incluso",
-      "Tamanhos": "2.0 a 9.0mm"
-    }
+      Conector: "Ø 15mm",
+      Cuff: "Incluso",
+      Tamanhos: "2.0 a 9.0mm",
+    },
   },
   {
     id: "3",
     nome: "Máscara Facial de Anestesia com Coxim Inflável",
-    descricao: "Máscara facial com almofada macia para proporcionar conforto e eficiência durante procedimentos respiratórios. Fabricada em PVC de alta qualidade.",
+    descricao:
+      "Máscara facial com almofada macia para proporcionar conforto e eficiência durante procedimentos respiratórios. Fabricada em PVC de alta qualidade.",
     preco: 9.5,
     precoPromocional: 9.31,
-    imagem: produto3,
+    imagem:
+      "/medpluscomerciohospitalar/mascara_facial_de_anestesia_com_coxim_inflavel_915_1_5946af7724155463fce6ded3aeda52c9.webp",
     categoria: "cardiorespiratorio",
     marca: "MedPlus",
     sku: "MFA001",
     estoque: 150,
     especificacoes: {
-      "Material": "PVC de alta qualidade",
-      "Almofada": "Macia e hermética",
+      Material: "PVC de alta qualidade",
+      Almofada: "Macia e hermética",
       "Anéis de retenção": "22mm (removíveis)",
-      "Tamanhos": "Neonatos, bebês, crianças e adultos",
-      "Características": "Ajuste perfeito e confortável",
-      "Uso": "Uso único"
-    }
+      Tamanhos: "Neonatos, bebês, crianças e adultos",
+      Características: "Ajuste perfeito e confortável",
+      Uso: "Uso único",
+    },
   },
   {
     id: "4",
     nome: "Filtro HMEF Adulto 48H",
-    descricao: "Dispositivo médico essencial para condicionamento de gases medicinais à fisiologia pulmonar. Atua como trocador de calor e umidade.",
+    descricao:
+      "Dispositivo médico essencial para condicionamento de gases medicinais à fisiologia pulmonar. Atua como trocador de calor e umidade.",
     preco: 7.0,
     precoPromocional: 6.86,
-    imagem: produto4,
+    imagem:
+      "/medpluscomerciohospitalar/filtro_hmef_adulto_48hs_3876_1_a0a1861557993bc3059bb63cce466670.webp",
     categoria: "cardiorespiratorio",
     marca: "MedPlus",
     sku: "HMEF001",
     estoque: 300,
     especificacoes: {
-      "Membrana": "Higroscópica + Hidrofóbica",
-      "Conectores": "22M/15F - 22F/15M",
-      "Entrada": "Policarbonato para CO2",
-      "Esterilização": "Óxido de etileno",
-      "Uso": "Descartável",
-      "Função": "Barreira microbiológica",
-      "Validade": "48 horas de uso"
-    }
+      Membrana: "Higroscópica + Hidrofóbica",
+      Conectores: "22M/15F - 22F/15M",
+      Entrada: "Policarbonato para CO2",
+      Esterilização: "Óxido de etileno",
+      Uso: "Descartável",
+      Função: "Barreira microbiológica",
+      Validade: "48 horas de uso",
+    },
   },
   {
     id: "5",
     nome: "Cateter Nasal de Oxigênio tipo Óculos",
-    descricao: "Cateter tipo óculos adulto para administração de oxigênio de baixo fluxo. Fabricado em PVC macio, atóxico e transparente.",
+    descricao:
+      "Cateter tipo óculos adulto para administração de oxigênio de baixo fluxo. Fabricado em PVC macio, atóxico e transparente.",
     preco: 3.0,
     precoPromocional: 2.94,
-    imagem: produto5,
+    imagem:
+      "/medpluscomerciohospitalar/cateter_nasal_de_oxigenio_tipo_oculos_2245_1_4f9c21c885229a29a3a2ca7c429f3a87.webp",
     categoria: "cardiorespiratorio",
     marca: "MedPlus",
     sku: "CNO001",
     estoque: 500,
     especificacoes: {
-      "Tipo": "Cateter nasal tipo óculos",
-      "Público": "Adulto",
-      "Comprimento": "1,4 metros",
-      "Material": "PVC macio, atóxico e transparente",
-      "Conexão": "Padrão para oxigênio medicinal",
-      "Aplicação": "Hospitalar, ambulatorial e domiciliar",
-      "Uso": "Uso único"
-    }
+      Tipo: "Cateter nasal tipo óculos",
+      Público: "Adulto",
+      Comprimento: "1,4 metros",
+      Material: "PVC macio, atóxico e transparente",
+      Conexão: "Padrão para oxigênio medicinal",
+      Aplicação: "Hospitalar, ambulatorial e domiciliar",
+      Uso: "Uso único",
+    },
   },
   {
     id: "6",
     nome: "Cânula Orofaríngea Guedel para Via Aérea",
-    descricao: "Cânula de Guedel fabricada em polietileno, disponível em diversos tamanhos para manutenção da via aérea.",
+    descricao:
+      "Cânula de Guedel fabricada em polietileno, disponível em diversos tamanhos para manutenção da via aérea.",
     preco: 3.4,
     precoPromocional: 3.33,
-    imagem: produto6,
+    imagem:
+      "/medpluscomerciohospitalar/canula_orofaringea_guedel_para_via_aerea_3013_1_7a4c993cc673c3a0b59fbf8b321e7038.webp",
     categoria: "cardiorespiratorio",
     marca: "MedPlus",
     sku: "COG001",
     estoque: 400,
     especificacoes: {
-      "Material": "Polietileno",
-      "Tamanhos": "Neonato a adulto grande porte",
-      "Uso": "Uso único",
-      "Esterilização": "Óxido de Etileno",
-      "Composição": "Polipropileno",
-      "Fabricação": "Bloco único"
-    }
+      Material: "Polietileno",
+      Tamanhos: "Neonato a adulto grande porte",
+      Uso: "Uso único",
+      Esterilização: "Óxido de Etileno",
+      Composição: "Polipropileno",
+      Fabricação: "Bloco único",
+    },
   },
   {
     id: "7",
     nome: "Máscara de Oxigênio de Alta Concentração com Reservatório",
-    descricao: "Máscara para fornecer altas concentrações de oxigênio. Equipada com bolsa de reservatório de 1 litro para oferta contínua.",
+    descricao:
+      "Máscara para fornecer altas concentrações de oxigênio. Equipada com bolsa de reservatório de 1 litro para oferta contínua.",
     preco: 12.0,
     precoPromocional: 11.76,
-    imagem: produto7,
+    imagem:
+      "/medpluscomerciohospitalar/mascara_de_oxigenio_de_alta_concentracao_com_reservatorio_hospicenter_81_1_6649d6a6a70caa32f2f93dbd1e4d7671.webp",
     categoria: "cardiorespiratorio",
     marca: "MedPlus",
     sku: "MOAC001",
     estoque: 180,
     especificacoes: {
       "Bolsa reservatório": "1 Litro",
-      "Modelos": "Adulto e pediátrico",
+      Modelos: "Adulto e pediátrico",
       "Tubo de O2": "2,10 metros",
-      "Presilha": "Ajustável",
-      "Material": "Livre de látex",
-      "Acabamento": "Transparente e macio",
-      "Registro ANVISA": "10150479085"
-    }
+      Presilha: "Ajustável",
+      Material: "Livre de látex",
+      Acabamento: "Transparente e macio",
+      "Registro ANVISA": "10150479085",
+    },
   },
   {
     id: "8",
     nome: "Reanimador Manual em PVC - Adulto, Pediátrico e Neonatal",
-    descricao: "Dispositivo portátil para ventilação com pressão positiva. Autoinflável, parte essencial do kit de reanimação.",
+    descricao:
+      "Dispositivo portátil para ventilação com pressão positiva. Autoinflável, parte essencial do kit de reanimação.",
     preco: 73.0,
     precoPromocional: 71.54,
-    imagem: produto8,
+    imagem:
+      "/medpluscomerciohospitalar/reanimador_manual_em_pvc_ambu_2259_1_e04d7c09a045f640175ff8416f612c55.webp",
     categoria: "urgencia-emergencia",
     marca: "MedPlus",
     sku: "RMB001",
@@ -175,51 +182,55 @@ export const products = [
       "Válvula Pop Off": "Policarbonato + Silicone",
       "Bolsa Reservatório": "EVA + Polipropileno",
       "Tubo de O2": "PVC",
-      "Estéril": "Não",
-      "Validade": "05 Anos",
-      "Tamanhos": "Adulto, Pediátrico e Neonatal"
-    }
+      Estéril: "Não",
+      Validade: "05 Anos",
+      Tamanhos: "Adulto, Pediátrico e Neonatal",
+    },
   },
   {
     id: "9",
     nome: "Cabo de Bisturi Cirúrgico em Aço Inox",
-    descricao: "Cabo de bisturi em aço inox para uso profissional. Design funcional proporciona praticidade e controle.",
+    descricao:
+      "Cabo de bisturi em aço inox para uso profissional. Design funcional proporciona praticidade e controle.",
     preco: 9.0,
     precoPromocional: 8.82,
-    imagem: produto9,
+    imagem:
+      "/medpluscomerciohospitalar/cabo_de_bisturi_cirrgico_n_3_e_n_4_1_20251104224015_e7676fae77ca.webp",
     categoria: "instrumentais-cirurgicos",
     marca: "MedPlus",
     sku: "CBB001",
     estoque: 120,
     especificacoes: {
-      "Tipo": "Cabo para bisturi",
-      "Material": "Aço inox",
-      "Acabamento": "Polido",
-      "Compatibilidade": "Lâminas padrão",
-      "Uso": "Profissional",
-      "Reutilizável": "Sim",
-      "Registro ANVISA": "10150479142"
-    }
+      Tipo: "Cabo para bisturi",
+      Material: "Aço inox",
+      Acabamento: "Polido",
+      Compatibilidade: "Lâminas padrão",
+      Uso: "Profissional",
+      Reutilizável: "Sim",
+      "Registro ANVISA": "10150479142",
+    },
   },
   {
     id: "10",
     nome: "Manta Térmica Aluminizada para Resgate",
-    descricao: "Acessório de proteção e conforto em situações de emergência. Desenvolvida em polietileno aluminizado com excelente isolamento térmico.",
+    descricao:
+      "Acessório de proteção e conforto em situações de emergência. Desenvolvida em polietileno aluminizado com excelente isolamento térmico.",
     preco: 10.3,
     precoPromocional: 10.09,
-    imagem: produto10,
+    imagem:
+      "/medpluscomerciohospitalar/manta_trmica_aluminizada_para_resgate_e_aqueciment_1_20260126151642_e2b52d6aa0ee.webp",
     categoria: "urgencia-emergencia",
     marca: "MedPlus",
     sku: "MTR001",
     estoque: 250,
     especificacoes: {
-      "Material": "Polietileno aluminizado",
-      "Função": "Manter aquecimento corporal",
-      "Isolamento": "Térmico de baixo peso",
-      "Resistência": "À prova d'água e vento",
-      "Resistente": "Ao atrito com o solo",
-      "Medidas": "2,10 x 1,40m",
-      "Uso": "Emergência e resgate"
-    }
+      Material: "Polietileno aluminizado",
+      Função: "Manter aquecimento corporal",
+      Isolamento: "Térmico de baixo peso",
+      Resistência: "À prova d'água e vento",
+      Resistente: "Ao atrito com o solo",
+      Medidas: "2,10 x 1,40m",
+      Uso: "Emergência e resgate",
+    },
   },
 ];
