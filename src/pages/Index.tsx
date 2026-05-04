@@ -95,7 +95,7 @@ const categoriesMenu = [
 const clientLogos = Array.from({ length: 16 }, (_, i) => ({
   id: i + 1,
   nome: `Cliente ${i + 1}`,
-  imagem: `/medpluscomerciohospitalar/logos-clientes-medplus${i + 1}.png`,
+  imagem: `/logos-clientes-medplus${i + 1}.png`,
 }));
 
 const banners = {

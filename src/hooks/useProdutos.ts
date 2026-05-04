@@ -50,27 +50,23 @@ export function useProdutos() {
 
         const imageMap: Record<string, string> = {
           MLP001:
-            "/medpluscomerciohospitalar/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
-          TSE001:
-            "/medpluscomerciohospitalar/tubo_sonda_endotraqueal_com_balao_2249_1_afd2596d447d58e9ff052e3227147b4a.webp",
+            "/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
+          TSE001: "/tubo_sonda_endotraqueal_com_balao_2249_1_afd2596d447d58e9ff052e3227147b4a.webp",
           MFA001:
-            "/medpluscomerciohospitalar/mascara_facial_de_anestesia_com_coxim_inflavel_915_1_5946af7724155463fce6ded3aeda52c9.webp",
-          HMEF001:
-            "/medpluscomerciohospitalar/filtro_hmef_adulto_48hs_3876_1_a0a1861557993bc3059bb63cce466670.webp",
+            "/mascara_facial_de_anestesia_com_coxim_inflavel_915_1_5946af7724155463fce6ded3aeda52c9.webp",
+          HMEF001: "/filtro_hmef_adulto_48hs_3876_1_a0a1861557993bc3059bb63cce466670.webp",
           CNO001:
-            "/medpluscomerciohospitalar/cateter_nasal_de_oxigenio_tipo_oculos_2245_1_4f9c21c885229a29a3a2ca7c429f3a87.webp",
+            "/cateter_nasal_de_oxigenio_tipo_oculos_2245_1_4f9c21c885229a29a3a2ca7c429f3a87.webp",
           COG001:
-            "/medpluscomerciohospitalar/canula_orofaringea_guedel_para_via_aerea_3013_1_7a4c993cc673c3a0b59fbf8b321e7038.webp",
+            "/canula_orofaringea_guedel_para_via_aerea_3013_1_7a4c993cc673c3a0b59fbf8b321e7038.webp",
           MOAC001:
-            "/medpluscomerciohospitalar/mascara_de_oxigenio_de_alta_concentracao_com_reservatorio_hospicenter_81_1_6649d6a6a70caa32f2f93dbd1e4d7671.webp",
-          RMB001:
-            "/medpluscomerciohospitalar/reanimador_manual_em_pvc_ambu_2259_1_e04d7c09a045f640175ff8416f612c55.webp",
-          CBB001:
-            "/medpluscomerciohospitalar/cabo_de_bisturi_cirrgico_n_3_e_n_4_1_20251104224015_e7676fae77ca.webp",
+            "/mascara_de_oxigenio_de_alta_concentracao_com_reservatorio_hospicenter_81_1_6649d6a6a70caa32f2f93dbd1e4d7671.webp",
+          RMB001: "/reanimador_manual_em_pvc_ambu_2259_1_e04d7c09a045f640175ff8416f612c55.webp",
+          CBB001: "/cabo_de_bisturi_cirrgico_n_3_e_n_4_1_20251104224015_e7676fae77ca.webp",
           MTR001:
-            "/medpluscomerciohospitalar/manta_trmica_aluminizada_para_resgate_e_aqueciment_1_20260126151642_e2b52d6aa0ee.webp",
+            "/manta_trmica_aluminizada_para_resgate_e_aqueciment_1_20260126151642_e2b52d6aa0ee.webp",
           "máscara-n95-001":
-            "/medpluscomerciohospitalar/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
+            "/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
         };
 
         const formatados = (data || []).map((p) => ({
@@ -86,11 +82,11 @@ export function useProdutos() {
           imagem:
             p.imagem_principal ||
             imageMap[p.sku] ||
-            "/medpluscomerciohospitalar/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
+            "/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
           imagemPrincipal:
             p.imagem_principal ||
             imageMap[p.sku] ||
-            "/medpluscomerciohospitalar/assets/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
+            "/assets/mascara_laringea_de_pvc_todos_os_tamanhos_hospicenter_2247_1_f7363858d40de5a1970efde52d7efa86.webp",
           imagensSecundarias: p.imagens_secundarias || [],
           imagemSecundarias: p.imagens_secundarias || [],
           categoria: p.categoria,
