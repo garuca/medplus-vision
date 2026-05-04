@@ -101,7 +101,7 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Router base="/medpluscomerciohospitalar">
+    <Router base="/">
       <App />
     </Router>
   </StrictMode>,
