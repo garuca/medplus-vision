@@ -225,7 +225,28 @@ export default function Produto() {
 
               {/* Mercado Pago Checkout Pro - SDK Oficial */}
               <div className="mt-6">
-                <MercadoPagoCheckout amount={produto.precoPromocional || produto.preco} />
+                <MercadoPagoCheckout
+                  amount={Number(produto.precoPromocional || produto.preco) || 0}
+                  items={[
+                    {
+                      produto: {
+                        id: String(produto.id),
+                        nome: produto.nome,
+                        descricao: produto.descricao || "",
+                        preco: Number(produto.preco) || 0,
+                        precoPromocional: Number(produto.precoPromocional) || undefined,
+                        imagem: produto.imagem || "",
+                        categoria: produto.categoria || "",
+                        marca: produto.marca || "",
+                        sku: produto.sku || "",
+                        estoque: produto.estoque || 0,
+                        especificacoes: produto.especificacoes || {},
+                      },
+                      quantidade: quantidade,
+                    },
+                  ]}
+                  customerEmail={""}
+                />
               </div>
 
               {/* Descrição - Above fold */}
