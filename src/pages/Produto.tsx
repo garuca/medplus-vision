@@ -17,7 +17,6 @@ import {
 import { useCart } from "../context/CartContext";
 import { useProdutoById } from "../hooks/useProdutos";
 import { useDataSource } from "../hooks/useDataSource";
-import { MercadoPagoCheckout } from "../components/MercadoPagoCheckoutPro";
 
 export default function Produto() {
   const [match, params] = useRoute("/produto/:id");
@@ -223,31 +222,13 @@ export default function Produto() {
                 <MessageCircle className="h-5 w-5" /> Comprar pelo WhatsApp
               </button>
 
-              {/* Mercado Pago Checkout Pro - SDK Oficial */}
-              <div className="mt-6">
-                <MercadoPagoCheckout
-                  amount={Number(produto.precoPromocional || produto.preco) || 0}
-                  items={[
-                    {
-                      produto: {
-                        id: String(produto.id),
-                        nome: produto.nome,
-                        descricao: produto.descricao || "",
-                        preco: Number(produto.preco) || 0,
-                        precoPromocional: Number(produto.precoPromocional) || undefined,
-                        imagem: produto.imagem || "",
-                        categoria: produto.categoria || "",
-                        marca: produto.marca || "",
-                        sku: produto.sku || "",
-                        estoque: produto.estoque || 0,
-                        especificacoes: produto.especificacoes || {},
-                      },
-                      quantidade: quantidade,
-                    },
-                  ]}
-                  customerEmail={""}
-                />
-              </div>
+              {/* Comprar pelo WhatsApp */}
+              <button
+                onClick={handleWhatsApp}
+                className="mt-3 w-full btn-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold"
+              >
+                <MessageCircle className="h-5 w-5" /> Comprar pelo WhatsApp
+              </button>
 
               {/* Descrição - Above fold */}
               <div className="mt-6">
@@ -271,26 +252,26 @@ export default function Produto() {
           </div>
 
           {/* Produtos Relacionados */}
-          <div className="mt-12">
-            <h2 className="text-xl font-bold mb-6">Produtos Relacionados</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {relatedProducts.map((p) => (
-                <Link key={p.id} to={`/produto/${p.id}`} className="glass-card group p-3">
-                  <div className="aspect-square overflow-hidden rounded-xl bg-white/50">
-                    <img
-                      src={p.imagem}
-                      alt={p.nome}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="mt-3 text-sm font-medium line-clamp-2">{p.nome}</h3>
-                  <p className="mt-1 font-bold text-primary">
-                    R$ {(p.precoPromocional || p.preco).toFixed(2).replace(".", ",")}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* <div className="mt-12">
+             <h2 className="text-xl font-bold mb-6">Produtos Relacionados</h2>
+             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+               {relatedProducts.map((p) => (
+                 <Link key={p.id} to={`/produto/${p.id}`} className="glass-card group p-3">
+                   <div className="aspect-square overflow-hidden rounded-xl bg-white/50">
+                     <img
+                       src={p.imagem}
+                       alt={p.nome}
+                       className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                     />
+                   </div>
+                   <h3 className="mt-3 text-sm font-medium line-clamp-2">{p.nome}</h3>
+                   <p className="mt-1 font-bold text-primary">
+                     R$ {(p.precoPromocional || p.preco).toFixed(2).replace(".", ",")}
+                   </p>
+                 </Link>
+               ))}
+             </div>
+           </div> */}
         </div>
       </section>
     </>
