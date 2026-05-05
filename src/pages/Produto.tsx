@@ -29,22 +29,22 @@ export default function Produto() {
   const { produto, loading, error } = useProdutoById(productId);
 
   const handleWhatsApp = () => {
-    if (!produto) return;
-    const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${(produto.precoPromocional || produto.preco).toFixed(2)}`;
+    if (!produto?.nome) return;
+    const preco = produto.precoPromocional || produto.preco || 0;
+    const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${preco.toFixed(2)}`;
     window.open(
       `https://api.whatsapp.com/send/?phone=556294896602?text=${encodeURIComponent(msg)}`,
       "_blank",
     );
   };
 
-  // Get all images for this product
-  const todasImagens = produto
-    ? [
-        produto.imagemPrincipal || produto.imagem,
-        ...(produto.imagensSecundarias || produto.imagemSecundarias || []),
-      ]
-    : [];
-
+  const todasImagens =
+    produto?.imagemPrincipal || produto?.imagem
+      ? [
+          produto.imagemPrincipal || produto.imagem,
+          ...(produto.imagensSecundarias || produto.imagemSecundarias || []),
+        ]
+      : [];
   const imagemAtual = todasImagens[imagemSelecionada] || todasImagens[0];
 
   if (loading) {
