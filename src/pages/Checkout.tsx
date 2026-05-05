@@ -121,7 +121,7 @@ export default function Checkout() {
     const docLabel = dados.tipoPessoa === "cpf" ? "CPF" : "CNPJ";
     const msg = `*NOVO PEDIDO - ${codigoPedido}*\n\n*Itens:*\n${itensLista}\n\n*Total:* R$ ${subtotal.toFixed(2)}\n\n*Cliente:* ${dados.nome}\n${dados.email}\n${dados.telefone}\n${docLabel}: ${dados.documento}\n\n*Endereço:* ${dados.endereco}, ${dados.numero} - ${dados.bairro}, ${dados.cidade}-${dados.estado}`;
     window.open(
-      `https://api.whatsapp.com/send/?phone=55556299981212&text=${encodeURIComponent(msg)}`,
+      `https://api.whatsapp.com/send/?phone=55556294896602&text=${encodeURIComponent(msg)}`,
       "_blank",
     );
   };

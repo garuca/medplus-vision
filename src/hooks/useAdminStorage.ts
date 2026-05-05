@@ -20,8 +20,9 @@ const defaultConfig: Configuracoes = {
     nome: "MedPlus Hospitalar",
     email: "contato@medplushospitalar.com.br",
     telefone: "(62) 3519-9974",
-    whatsapp: "556299981212",
-    endereco: "Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia - GO, 74917-196",
+    whatsapp: "556294896602",
+    endereco:
+      "Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia - GO, 74917-196",
     cnpj: "34.075.280/0001-19",
   },
   redesSociais: {
@@ -61,7 +62,7 @@ export function useAdminStorage() {
             nome: c.nome,
             slug: c.slug,
             icone: c.icone,
-          }))
+          })),
         );
       } else {
         // Insert default categorias
@@ -101,7 +102,7 @@ export function useAdminStorage() {
             destaque: p.destaque,
             ativo: p.ativo,
             createdAt: p.created_at,
-          }))
+          })),
         );
       }
 
@@ -123,37 +124,42 @@ export function useAdminStorage() {
   };
 
   const addProduto = async (produto: Omit<Produto, "id" | "createdAt">) => {
-    const { data, error } = await supabase.from("produtos").insert({
-      nome: produto.nome,
-      descricao: produto.descricao,
-      preco: produto.preco,
-      preco_original: produto.precoOriginal,
-      imagem_principal: produto.imagemPrincipal,
-      imagens_secundarias: produto.imagensSecundarias,
-      categoria: produto.categoria,
-      estoque: produto.estoque,
-      sku: produto.sku,
-      dimensoes: produto.dimensoes,
-      peso: produto.peso,
-      destaque: produto.destaque,
-      ativo: produto.ativo,
-    }).select().single();
+    const { data, error } = await supabase
+      .from("produtos")
+      .insert({
+        nome: produto.nome,
+        descricao: produto.descricao,
+        preco: produto.preco,
+        preco_original: produto.precoOriginal,
+        imagem_principal: produto.imagemPrincipal,
+        imagens_secundarias: produto.imagensSecundarias,
+        categoria: produto.categoria,
+        estoque: produto.estoque,
+        sku: produto.sku,
+        dimensoes: produto.dimensoes,
+        peso: produto.peso,
+        destaque: produto.destaque,
+        ativo: produto.ativo,
+      })
+      .select()
+      .single();
 
     if (error) throw error;
-    
+
     await loadData();
     return data;
   };
 
   const updateProduto = async (id: string, data: Partial<Produto>) => {
     const updateData: Record<string, unknown> = {};
-    
+
     if (data.nome !== undefined) updateData.nome = data.nome;
     if (data.descricao !== undefined) updateData.descricao = data.descricao;
     if (data.preco !== undefined) updateData.preco = data.preco;
     if (data.precoOriginal !== undefined) updateData.preco_original = data.precoOriginal;
     if (data.imagemPrincipal !== undefined) updateData.imagem_principal = data.imagemPrincipal;
-    if (data.imagensSecundarias !== undefined) updateData.imagens_secundarias = data.imagensSecundarias;
+    if (data.imagensSecundarias !== undefined)
+      updateData.imagens_secundarias = data.imagensSecundarias;
     if (data.categoria !== undefined) updateData.categoria = data.categoria;
     if (data.estoque !== undefined) updateData.estoque = data.estoque;
     if (data.sku !== undefined) updateData.sku = data.sku;
@@ -162,24 +168,18 @@ export function useAdminStorage() {
     if (data.destaque !== undefined) updateData.destaque = data.destaque;
     if (data.ativo !== undefined) updateData.ativo = data.ativo;
 
-    const { error } = await supabase
-      .from("produtos")
-      .update(updateData)
-      .eq("id", id);
+    const { error } = await supabase.from("produtos").update(updateData).eq("id", id);
 
     if (error) throw error;
-    
+
     await loadData();
   };
 
   const deleteProduto = async (id: string) => {
-    const { error } = await supabase
-      .from("produtos")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("produtos").delete().eq("id", id);
 
     if (error) throw error;
-    
+
     await loadData();
   };
 
@@ -195,36 +195,30 @@ export function useAdminStorage() {
       .single();
 
     if (error) throw error;
-    
+
     await loadData();
     return data;
   };
 
   const updateCategoria = async (id: string, data: Partial<Categoria>) => {
     const updateData: Record<string, unknown> = {};
-    
+
     if (data.nome !== undefined) updateData.nome = data.nome;
     if (data.slug !== undefined) updateData.slug = data.slug;
     if (data.icone !== undefined) updateData.icone = data.icone;
 
-    const { error } = await supabase
-      .from("categorias")
-      .update(updateData)
-      .eq("id", id);
+    const { error } = await supabase.from("categorias").update(updateData).eq("id", id);
 
     if (error) throw error;
-    
+
     await loadData();
   };
 
   const deleteCategoria = async (id: string) => {
-    const { error } = await supabase
-      .from("categorias")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("categorias").delete().eq("id", id);
 
     if (error) throw error;
-    
+
     await loadData();
   };
 
@@ -234,7 +228,7 @@ export function useAdminStorage() {
       .upsert({ id: "empresa", dados: data }, { onConflict: "id" });
 
     if (error) throw error;
-    
+
     setConfig(data);
   };
 

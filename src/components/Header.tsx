@@ -72,7 +72,7 @@ export function Header() {
               <span>(62) 3519-9974</span>
             </a>
             <a
-              href="https://api.whatsapp.com/send/?phone=55556299981212"
+              href="https://api.whatsapp.com/send/?phone=556294896602"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 hover:text-cyan-100 transition"

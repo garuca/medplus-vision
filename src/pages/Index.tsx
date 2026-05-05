@@ -445,7 +445,7 @@ export default function Index() {
               </div>
               <div className="mt-4 lg:mt-0">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=55556299981212"
+                  href="https://api.whatsapp.com/send/?phone=556294896602"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-8 py-4 text-sm font-semibold text-white hover:bg-cyan-600 transition"
@@ -547,7 +547,7 @@ export default function Index() {
               <p className="mt-4 text-xl text-blue-100">Nosso suporte está disponível 24/7</p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=55556299981212"
+                  href="https://api.whatsapp.com/send/?phone=556294896602"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-base font-bold text-blue-600 hover:bg-blue-50 transition-all hover:scale-105 hover:shadow-xl"

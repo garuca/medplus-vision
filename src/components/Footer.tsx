@@ -99,7 +99,7 @@ export function Footer() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://api.whatsapp.com/send/?phone=55556299981212"
+                href="https://api.whatsapp.com/send/?phone=556294896602"
                 target="_blank"
                 rel="noreferrer"
                 className="btn-primary inline-flex items-center rounded-full px-4 text-xs font-semibold"

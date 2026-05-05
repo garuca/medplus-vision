@@ -24,7 +24,7 @@ import {
 
 const contactInfo = {
   phone: "(62) 3519-9974",
-  whatsapp: "556299981212",
+  whatsapp: "556294896602",
   whatsappJuliano: "556294896602",
   email: "contato@medhospitalar.com.br",
   address:
@@ -39,13 +39,13 @@ const departments = [
     email: "vendas@medhospitalar.com.br",
     whatsapp: "556294896602",
     desc: "Equipamentos médicos e hospitalares",
-    contato: "Juliano",
+    contato: "Juliano Rodrigues",
   },
   {
     icon: Calendar,
     title: "Locação",
     email: "locacao@medhospitalar.com.br",
-    whatsapp: "556299981212",
+    whatsapp: "556294896602",
     desc: "Planos de locação de equipamentos",
     contato: "Lucas",
   },
@@ -53,7 +53,7 @@ const departments = [
     icon: Building2,
     title: "Registro de Preço",
     email: "registro@medhospitalar.com.br",
-    whatsapp: "556299981212",
+    whatsapp: "556294896602",
     desc: "Contratos para órgãos públicos",
     contato: "Lucas",
   },
@@ -61,7 +61,7 @@ const departments = [
     icon: MessageCircle,
     title: "Assistência Técnica",
     email: "tecnico@medhospitalar.com.br",
-    whatsapp: "556299981212",
+    whatsapp: "556294896602",
     desc: "Manutenção e suporte técnico",
     contato: "Lucas",
   },
@@ -146,7 +146,7 @@ export default function Contato() {
               </div>
             </a>
             <a
-              href={`https://api.whatsapp.com/send/?phone=55556299981212`}
+              href={`https://api.whatsapp.com/send/?phone=55556294896602`}
               target="_blank"
               className="group glass-card flex flex-col items-center gap-4 p-6 text-center hover:scale-[1.02] transition-all duration-300"
             >
@@ -421,7 +421,7 @@ export default function Contato() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://wa.me/556299981212"
+              href="https://wa.me/556294896602"
               target="_blank"
               className="btn-primary inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-semibold"
             >

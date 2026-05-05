@@ -32,7 +32,7 @@ export default function Produto() {
     if (!produto) return;
     const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${(produto.precoPromocional || produto.preco).toFixed(2)}`;
     window.open(
-      `https://api.whatsapp.com/send/?phone=55556299981212?text=${encodeURIComponent(msg)}`,
+      `https://api.whatsapp.com/send/?phone=556294896602?text=${encodeURIComponent(msg)}`,
       "_blank",
     );
   };
