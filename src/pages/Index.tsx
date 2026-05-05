@@ -209,14 +209,7 @@ export default function Index() {
       {/* Benefícios com Ícones Animados */}
       <section className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="glass-card flex flex-col items-center justify-center p-4 text-center hover:scale-105 transition-transform">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 mb-2">
-                <Truck className="h-6 w-6 animate-bounce" />
-              </div>
-              <span className="text-xs font-medium text-foreground">Frete Grátis</span>
-              <span className="text-xs font-bold text-foreground">Compras acima de R$ 499,90</span>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="glass-card flex flex-col items-center justify-center p-4 text-center hover:scale-105 transition-transform">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 mb-2">
                 <CreditCard className="h-6 w-6 animate-pulse" />
@@ -229,7 +222,7 @@ export default function Index() {
                 <MessageCircle className="h-6 w-6 animate-pulse" />
               </div>
               <span className="text-xs font-medium text-foreground">WhatsApp</span>
-              <span className="text-xs font-bold text-foreground">(62) 3397-2256</span>
+              <span className="text-xs font-bold text-foreground">(62) 9489-6602</span>
             </div>
             <div className="glass-card flex flex-col items-center justify-center p-4 text-center hover:scale-105 transition-transform">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600 mb-2">
@@ -464,23 +457,14 @@ export default function Index() {
       {/* Política de Serviços */}
       <section className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="glass-card flex items-center gap-4 p-5">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-cyan-100">
-                <Truck className="h-7 w-7 text-cyan-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Frete Grátis</h3>
-                <p className="text-sm text-gray-500">Compras acima de R$ 499,90</p>
-              </div>
-            </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="glass-card flex items-center gap-4 p-5">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-green-100">
                 <Shield className="h-7 w-7 text-green-600" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">Compra Segura</h3>
-                <p className="text-sm text-gray-500">Política de devolução 30 dias</p>
+                <p className="text-sm text-gray-500">Política de devolução 7 dias</p>
               </div>
             </div>
             <div className="glass-card flex items-center gap-4 p-5">
@@ -488,7 +472,7 @@ export default function Index() {
                 <Headphones className="h-7 w-7 text-purple-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Suporte 24/7</h3>
+                <h3 className="font-semibold text-gray-900">Suporte</h3>
                 <p className="text-sm text-gray-500">Atendimento humanizado</p>
               </div>
             </div>
@@ -544,7 +528,7 @@ export default function Index() {
             <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-cyan-400/20 blur-3xl animate-pulse"></div>
             <div className="relative z-10">
               <h2 className="text-4xl font-bold">Precisa de ajuda?</h2>
-              <p className="mt-4 text-xl text-blue-100">Nosso suporte está disponível 24/7</p>
+              <p className="mt-4 text-xl text-blue-100">Nosso suporte está disponível</p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <a
                   href="https://api.whatsapp.com/send/?phone=556294896602"
