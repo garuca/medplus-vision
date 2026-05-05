@@ -1,10 +1,9 @@
 import logoImg from "../assets/medplus-logo.png?url";
-import heroImg from "../assets/hero-medical.jpg?url";
-import bannerImg from "../assets/hero-medical.jpg?url";
+import bannerImg from "../assets/Vendas de Equipamentos-Dj03NzmQ.jpg?url";
 
 export const placeholderImages = {
   logo: logoImg,
-  hero: heroImg,
+  hero: bannerImg,
   banner: bannerImg,
   logoCliente: "/logos-clientes-medplus.png",
   servico: "/logos-clientes-medplus2.png",
