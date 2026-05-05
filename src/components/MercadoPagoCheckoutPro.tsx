@@ -97,10 +97,14 @@ export function MercadoPagoCheckout({ amount, items, customerEmail }: MercadoPag
       }
     };
 
-    if (items.length > 0 && amount > 0) {
+    if (items && items.length > 0 && amount > 0) {
       createPreference();
     }
   }, [items, amount, customerEmail]);
+
+  if (!items || items.length === 0) {
+    return null;
+  }
 
   return (
     <div className="space-y-3">

@@ -45,7 +45,7 @@ export default function Produto() {
           ...(produto.imagensSecundarias || produto.imagemSecundarias || []),
         ]
       : [];
-  const imagemAtual = todasImagens[imagemSelecionada] || todasImagens[0];
+  const imagemAtual = todasImagens[imagemSelecionada] || todasImagens[0] || "";
 
   if (loading) {
     return (
