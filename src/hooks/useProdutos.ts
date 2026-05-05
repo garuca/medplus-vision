@@ -131,44 +131,51 @@ export function useProdutoById(id: string) {
 
     try {
       if (source === "supabase") {
-        const { data, error } = await supabase.from("produtos").select("*").eq("id", id).single();
+        try {
+          const { data, error } = await supabase.from("produtos").select("*").eq("id", id).single();
 
-        if (error) throw error;
+          if (error) throw error;
 
-        if (data) {
-          setProduto({
-            id: data.id,
-            nome: data.nome,
-            descricao: data.descricao,
-            preco: Number(data.preco),
-            precoOriginal: data.preco_original ? Number(data.preco_original) : undefined,
-            precoPromocional:
-              data.preco_original && Number(data.preco_original) > Number(data.preco)
-                ? Number(data.preco)
-                : undefined,
-            imagem: data.imagem_principal,
-            imagemPrincipal: data.imagem_principal,
-            imagensSecundarias: data.imagens_secundarias || [],
-            imagemSecundarias: data.imagens_secundarias || [],
-            categoria: data.categoria,
-            marca: "MedPlus",
-            sku: data.sku,
-            estoque: data.estoque,
-            dimensoes: data.dimensoes || { altura: 0, largura: 0, comprimento: 0 },
-            peso: Number(data.peso) || 0,
-            destaque: data.destaque,
-            ativo: data.ativo,
-          });
+          if (data) {
+            setProduto({
+              id: data.id,
+              nome: data.nome,
+              descricao: data.descricao,
+              preco: Number(data.preco),
+              precoOriginal: data.preco_original ? Number(data.preco_original) : undefined,
+              precoPromocional: data.preco_promocional ? Number(data.preco_promocional) : undefined,
+              imagem: data.imagem || "/placeholder.png",
+              imagemPrincipal: data.imagem_principal || data.imagem || "",
+              imagensSecundarias: data.imagens_secundarias || [],
+              categoria: data.categoria,
+              subcategoria: data.subcategoria || "",
+              marca: data.marca || "",
+              sku: data.sku,
+              estoque: data.estoque,
+              dimensoes: data.dimensoes || { altura: 0, largura: 0, comprimento: 0 },
+              peso: Number(data.peso) || 0,
+              destaque: data.destaque,
+              ativo: data.ativo,
+            });
+            setLoading(false);
+            return;
+          }
+        } catch (supabaseError) {
+          console.log("Supabase indisponível, usando produtos locais");
         }
+      }
+
+      const p = produtosLocais.find((p) => p.id === id);
+      if (p) {
+        setProduto(p);
       } else {
-        const p = produtosLocais.find((p) => p.id === id);
-        if (p) setProduto(p);
+        setError("Produto não encontrado");
       }
     } catch (err) {
       console.error("Erro ao carregar produto:", err);
-      setError("Erro ao carregar produto");
       const p = produtosLocais.find((p) => p.id === id);
       if (p) setProduto(p);
+      else setError("Produto não encontrado");
     } finally {
       setLoading(false);
     }
