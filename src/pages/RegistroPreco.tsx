@@ -138,16 +138,10 @@ export default function RegistroPreco() {
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <button
-                onClick={() => setStep(1)}
-                className="btn-primary inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold"
-              >
-                Quero Adquirir <ArrowRight className="h-5 w-5" />
-              </button>
               <a
-                href="https://api.whatsapp.com/send/?phone=556294896602"
+                href="https://api.whatsapp.com/send/?phone=5562994896602"
                 target="_blank"
-                className="btn-glass inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold"
+                className="btn-primary inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold"
               >
                 <Phone className="h-5 w-5" /> Falar no WhatsApp
               </a>

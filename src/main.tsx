@@ -30,6 +30,7 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { WhatsAppFab } from "./components/WhatsAppFab";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function AdminRoutes() {
   return (
@@ -86,16 +87,18 @@ function App() {
   const isAdmin = location.includes("/admin");
 
   return (
-    <CartProvider>
-      <div className="flex min-h-screen flex-col">
-        {!isAdmin && <Header />}
-        <main className="flex-1">
-          <AppContent />
-        </main>
-        {!isAdmin && <Footer />}
-        {!isAdmin && <WhatsAppFab />}
-      </div>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <div className="flex min-h-screen flex-col">
+          {!isAdmin && <Header />}
+          <main className="flex-1">
+            <AppContent />
+          </main>
+          {!isAdmin && <Footer />}
+          {!isAdmin && <WhatsAppFab />}
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

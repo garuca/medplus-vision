@@ -102,7 +102,7 @@ const banners = {
   hero: {
     titulo: "Excelência em suprimentos médicos para profissionais e instituições",
     subtitulo: "Parceria confiável com qualidade comprovada",
-    descricao: "Desde 2012 fornecendo equipamentos médicos de qualidade",
+    descricao: "Desde 2009 fornecendo equipamentos médicos de qualidade",
     botao: "CONHECER CATÁLOGO",
     link: "/loja",
   },
@@ -438,7 +438,7 @@ export default function Index() {
               </div>
               <div className="mt-4 lg:mt-0">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=556294896602"
+                  href="https://api.whatsapp.com/send/?phone=5562994896602"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-8 py-4 text-sm font-semibold text-white hover:bg-cyan-600 transition"

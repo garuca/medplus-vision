@@ -9,9 +9,12 @@ import {
   Phone,
   MessageCircle,
   ChevronDown,
+  LogOut,
 } from "lucide-react";
 import { placeholderImages } from "../lib/images";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { LoginModal } from "./LoginModal";
 
 const links = [
   { to: "/", label: "Início" },
@@ -42,7 +45,9 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [search, setSearch] = useState("");
   const [showCategorias, setShowCategorias] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const { totaleItens } = useCart();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -126,18 +131,37 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Link
-                to="/minha-conta"
-                className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition"
-              >
-                <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
-                  <User className="h-4 w-4 text-gray-600" />
+              {user ? (
+                <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition">
+                  <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+                    <User className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-left hidden lg:block">
+                    <p className="text-xs text-gray-500">Olá!</p>
+                    <p className="text-sm font-medium text-gray-900">{user.email?.split("@")[0]}</p>
+                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    className="ml-2 p-2 rounded-full hover:bg-gray-100 text-gray-500"
+                    title="Sair"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </button>
                 </div>
-                <div className="text-left hidden lg:block">
-                  <p className="text-xs text-gray-500">Minha Conta</p>
-                  <p className="text-sm font-medium text-gray-900">Entrar</p>
-                </div>
-              </Link>
+              ) : (
+                <button
+                  onClick={() => setShowLogin(true)}
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition"
+                >
+                  <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+                    <User className="h-4 w-4 text-gray-600" />
+                  </div>
+                  <div className="text-left hidden lg:block">
+                    <p className="text-xs text-gray-500">Minha Conta</p>
+                    <p className="text-sm font-medium text-gray-900">Entrar</p>
+                  </div>
+                </button>
+              )}
 
               <Link
                 to="/carrinho"
@@ -257,6 +281,7 @@ export function Header() {
           </div>
         </div>
       )}
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
     </header>
   );
 }

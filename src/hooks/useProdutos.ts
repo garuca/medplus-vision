@@ -122,6 +122,11 @@ export function useProdutoById(id: string) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!id) {
+      setProduto(null);
+      setLoading(false);
+      return;
+    }
     loadProduto();
   }, [id, source]);
 

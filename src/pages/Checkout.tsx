@@ -11,6 +11,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { MercadoPagoCheckout, MercadoPagoBadge } from "../components/MercadoPagoCheckoutPro";
 import {
   useCep,
@@ -39,12 +40,17 @@ interface DadosCliente {
 
 export default function Checkout() {
   const { itens, subtotal, limparCarrinho } = useCart();
+  const { user, signIn } = useAuth();
   const [passo, setPasso] = useState(1);
   const [pedidoConcluido, setPedidoConcluido] = useState(false);
   const [codigoPedido, setCodigoPedido] = useState("");
   const [mpPaymentId, setMpPaymentId] = useState("");
   const [docValido, setDocValido] = useState<boolean | null>(null);
   const { buscarCep, loading: loadingCep } = useCep();
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginSenha, setLoginSenha] = useState("");
+  const [loginErro, setLoginErro] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const [dados, setDados] = useState<DadosCliente>({
     nome: "",
@@ -134,6 +140,17 @@ export default function Checkout() {
     limparCarrinho();
   };
 
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setLoginErro("");
+    const { error } = await signIn(loginEmail, loginSenha);
+    if (error) {
+      setLoginErro(error.message);
+    }
+    setLoginLoading(false);
+  };
+
   if (pedidoConcluido) {
     return (
       <section className="px-4 py-16 sm:px-6 lg:px-8">
@@ -220,180 +237,229 @@ export default function Checkout() {
         <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
             {passo === 1 && (
-              <div className="glass-card p-6">
-                <h2 className="text-lg font-bold mb-4">Dados do Cliente</h2>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="sm:col-span-2">
-                    <label className="text-sm font-medium">Nome Completo / Razão Social</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.nome}
-                      onChange={(e) => setDados({ ...dados, nome: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder={dados.tipoPessoa === "cpf" ? "Seu nome" : "Nome da empresa"}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">E-mail</label>
-                    <input
-                      required
-                      type="email"
-                      value={dados.email}
-                      onChange={(e) => setDados({ ...dados, email: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="seu@email.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Telefone</label>
-                    <input
-                      required
-                      type="tel"
-                      value={dados.telefone}
-                      onChange={(e) => handleTelefoneChange(e.target.value)}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="(62) 99999-9999"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Tipo de Pessoa</label>
-                    <div className="flex gap-2 mt-1">
-                      <button
-                        type="button"
-                        onClick={() => handleTipoPessoaChange("cpf")}
-                        className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
-                          dados.tipoPessoa === "cpf"
-                            ? "bg-primary text-white"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        CPF
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleTipoPessoaChange("cnpj")}
-                        className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
-                          dados.tipoPessoa === "cnpj"
-                            ? "bg-primary text-white"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        CNPJ
-                      </button>
+              <div className="space-y-4">
+                {!user && (
+                  <div className="glass-card p-4">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                      <div>
+                        <p className="font-medium text-sm">Já é cliente?</p>
+                        <p className="text-xs text-muted-foreground">
+                          Entre para preencher automaticamente
+                        </p>
+                      </div>
+                      <form onSubmit={handleLoginSubmit} className="flex gap-2 items-end">
+                        <div className="flex gap-1">
+                          <input
+                            type="email"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                            placeholder="E-mail"
+                            className="w-28 text-sm px-2 py-1.5 rounded-lg border"
+                          />
+                          <input
+                            type="password"
+                            value={loginSenha}
+                            onChange={(e) => setLoginSenha(e.target.value)}
+                            placeholder="Senha"
+                            className="w-20 text-sm px-2 py-1.5 rounded-lg border"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={loginLoading || !loginEmail || !loginSenha}
+                          className="px-3 py-1.5 bg-primary text-white text-sm rounded-lg disabled:opacity-50"
+                        >
+                          {loginLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
+                        </button>
+                      </form>
                     </div>
+                    {loginErro && <p className="text-xs text-red-500 mt-2">{loginErro}</p>}
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Ou{" "}
+                      <Link href="/cadastro" className="text-primary hover:underline">
+                        crie uma conta
+                      </Link>{" "}
+                      para acompanhar seus pedidos
+                    </p>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium">
-                      {dados.tipoPessoa === "cpf" ? "CPF" : "CNPJ"}
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.documento}
-                      onChange={(e) => handleDocumentoChange(e.target.value)}
-                      className={`glass-input mt-1 w-full rounded-xl px-4 py-3 ${
-                        docValido === false ? "border-red-500" : ""
-                      }`}
-                      placeholder={
-                        dados.tipoPessoa === "cpf" ? "000.000.000-00" : "00.000.000/0001-00"
-                      }
-                    />
-                    {docValido === false && (
-                      <p className="text-xs text-red-500 mt-1">Documento inválido</p>
-                    )}
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-sm font-medium">CEP</label>
-                    <div className="flex gap-2">
+                )}
+                <div className="glass-card p-6">
+                  <h2 className="text-lg font-bold mb-4">Dados do Cliente</h2>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium">Nome Completo / Razão Social</label>
                       <input
                         required
                         type="text"
-                        value={dados.CEP}
-                        onChange={(e) => setDados({ ...dados, CEP: e.target.value })}
-                        onBlur={handleBuscarCep}
-                        className="glass-input mt-1 flex-1 rounded-xl px-4 py-3"
-                        placeholder="00000-000"
+                        value={dados.nome}
+                        onChange={(e) => setDados({ ...dados, nome: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder={dados.tipoPessoa === "cpf" ? "Seu nome" : "Nome da empresa"}
                       />
-                      <button
-                        type="button"
-                        onClick={handleBuscarCep}
-                        disabled={loadingCep || dados.CEP.length < 8}
-                        className="mt-1 px-4 py-2 bg-primary text-white rounded-xl disabled:opacity-50"
-                      >
-                        {loadingCep ? (
-                          <Loader2 className="h-5 w-5 animate-spin" />
-                        ) : (
-                          <Search className="h-5 w-5" />
-                        )}
-                      </button>
                     </div>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-sm font-medium">Endereço</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.endereco}
-                      onChange={(e) => setDados({ ...dados, endereco: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="Rua, Avenida, etc."
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Número</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.numero}
-                      onChange={(e) => setDados({ ...dados, numero: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="123"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Complemento</label>
-                    <input
-                      type="text"
-                      value={dados.complemento}
-                      onChange={(e) => setDados({ ...dados, complemento: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="Apto, sala, etc."
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Bairro</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.bairro}
-                      onChange={(e) => setDados({ ...dados, bairro: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="Bairro"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Cidade</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.cidade}
-                      onChange={(e) => setDados({ ...dados, cidade: e.target.value })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="Cidade"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Estado</label>
-                    <input
-                      required
-                      type="text"
-                      value={dados.estado}
-                      onChange={(e) => setDados({ ...dados, estado: e.target.value.toUpperCase() })}
-                      className="glass-input mt-1 w-full rounded-xl px-4 py-3"
-                      placeholder="GO"
-                      maxLength={2}
-                    />
+                    <div>
+                      <label className="text-sm font-medium">E-mail</label>
+                      <input
+                        required
+                        type="email"
+                        value={dados.email}
+                        onChange={(e) => setDados({ ...dados, email: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="seu@email.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Telefone</label>
+                      <input
+                        required
+                        type="tel"
+                        value={dados.telefone}
+                        onChange={(e) => handleTelefoneChange(e.target.value)}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="(62) 99999-9999"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Tipo de Pessoa</label>
+                      <div className="flex gap-2 mt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleTipoPessoaChange("cpf")}
+                          className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                            dados.tipoPessoa === "cpf"
+                              ? "bg-primary text-white"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          CPF
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleTipoPessoaChange("cnpj")}
+                          className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                            dados.tipoPessoa === "cnpj"
+                              ? "bg-primary text-white"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          CNPJ
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">
+                        {dados.tipoPessoa === "cpf" ? "CPF" : "CNPJ"}
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.documento}
+                        onChange={(e) => handleDocumentoChange(e.target.value)}
+                        className={`glass-input mt-1 w-full rounded-xl px-4 py-3 ${
+                          docValido === false ? "border-red-500" : ""
+                        }`}
+                        placeholder={
+                          dados.tipoPessoa === "cpf" ? "000.000.000-00" : "00.000.000/0001-00"
+                        }
+                      />
+                      {docValido === false && (
+                        <p className="text-xs text-red-500 mt-1">Documento inválido</p>
+                      )}
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium">CEP</label>
+                      <div className="flex gap-2">
+                        <input
+                          required
+                          type="text"
+                          value={dados.CEP}
+                          onChange={(e) => setDados({ ...dados, CEP: e.target.value })}
+                          onBlur={handleBuscarCep}
+                          className="glass-input mt-1 flex-1 rounded-xl px-4 py-3"
+                          placeholder="00000-000"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleBuscarCep}
+                          disabled={loadingCep || dados.CEP.length < 8}
+                          className="mt-1 px-4 py-2 bg-primary text-white rounded-xl disabled:opacity-50"
+                        >
+                          {loadingCep ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                          ) : (
+                            <Search className="h-5 w-5" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-sm font-medium">Endereço</label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.endereco}
+                        onChange={(e) => setDados({ ...dados, endereco: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="Rua, Avenida, etc."
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Número</label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.numero}
+                        onChange={(e) => setDados({ ...dados, numero: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="123"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Complemento</label>
+                      <input
+                        type="text"
+                        value={dados.complemento}
+                        onChange={(e) => setDados({ ...dados, complemento: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="Apto, sala, etc."
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Bairro</label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.bairro}
+                        onChange={(e) => setDados({ ...dados, bairro: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="Bairro"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Cidade</label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.cidade}
+                        onChange={(e) => setDados({ ...dados, cidade: e.target.value })}
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="Cidade"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Estado</label>
+                      <input
+                        required
+                        type="text"
+                        value={dados.estado}
+                        onChange={(e) =>
+                          setDados({ ...dados, estado: e.target.value.toUpperCase() })
+                        }
+                        className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                        placeholder="GO"
+                        maxLength={2}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
