@@ -104,7 +104,7 @@ export default function Sobre() {
               para Profissionais e Instituições
             </h1>
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Há mais de 15 anos fornecendo equipamentos médicos de qualidade para hospitals,
+              Há mais de 15 anos, fornecemos equipamentos médicos de alta qualidade para hospitais,
               clínicas e profissionais de saúde em todo o Brasil.
             </p>
           </div>
