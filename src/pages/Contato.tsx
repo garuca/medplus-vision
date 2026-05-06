@@ -26,7 +26,7 @@ const contactInfo = {
   phone: "(62) 3519-9974",
   whatsapp: "556294896602",
   whatsappJuliano: "556294896602",
-  email: "contato@medhospitalar.com.br",
+  email: "juliano@medplushospitalar.com.br",
   address:
     "Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia - GO, 74917-196",
   hours: "Seg à Qui: 8h às 18h | Sex: 8h às 17h",
@@ -36,7 +36,7 @@ const departments = [
   {
     icon: Stethoscope,
     title: "Vendas",
-    email: "vendas@medhospitalar.com.br",
+    email: "juliano@medplushospitalar.com.br",
     whatsapp: "556294896602",
     desc: "Equipamentos médicos e hospitalares",
     contato: "Juliano Rodrigues",

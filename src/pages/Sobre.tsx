@@ -247,10 +247,10 @@ export default function Sobre() {
                 <Phone className="h-4 w-4" /> (62) 3519-9974
               </a>
               <a
-                href="mailto:contato@medplushospitalar.com.br"
+                href="mailto:juliano@medplushospitalar.com.br"
                 className="inline-flex items-center gap-2 text-sm hover:text-primary"
               >
-                <Mail className="h-4 w-4" /> contato@medplushospitalar.com.br
+                <Mail className="h-4 w-4" /> juliano@medplushospitalar.com.br
               </a>
               <span className="inline-flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4" /> Goiás - Brasil
