@@ -125,11 +125,7 @@ export default function RegistroPreco() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Adesão à Ata de
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-500 to-cyan-500">
-                Registro de Preço
-              </span>
+              ADESÃO DE ATA DE REGISTRO DE PREÇO
             </h1>
 
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
