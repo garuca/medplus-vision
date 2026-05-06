@@ -528,16 +528,16 @@ export default function Index() {
             <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-cyan-400/20 blur-3xl animate-pulse"></div>
             <div className="relative z-10">
               <h2 className="text-4xl font-bold">Precisa de ajuda?</h2>
-              <p className="mt-4 text-xl text-blue-100">Nosso suporte está disponível</p>
+              <p className="mt-4 text-xl text-blue-100">Atendimento rápido pelo WhatsApp</p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <a
-                  href="https://api.whatsapp.com/send/?phone=556294896602"
+                  href="https://api.whatsapp.com/send/?phone=5562994896602"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-base font-bold text-blue-600 hover:bg-blue-50 transition-all hover:scale-105 hover:shadow-xl"
                 >
                   <MessageCircle className="h-5 w-5" />
-                  Falar no WhatsApp
+                  Falar no WhatsApp: (62) 99489-6602
                 </a>
               </div>
             </div>

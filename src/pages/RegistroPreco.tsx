@@ -390,11 +390,11 @@ export default function RegistroPreco() {
                 <p className="text-xs text-center text-muted-foreground">
                   ou solicite via WhatsApp:{" "}
                   <a
-                    href="https://api.whatsapp.com/send/?phone=556294896602"
+                    href="https://api.whatsapp.com/send/?phone=5562994896602"
                     target="_blank"
                     className="text-primary font-medium"
                   >
-                    (62) 9998-1212
+                    (62) 99489-6602
                   </a>
                 </p>
               </div>
@@ -411,11 +411,11 @@ export default function RegistroPreco() {
             adesão.
           </p>
           <a
-            href="https://api.whatsapp.com/send/?phone=556294896602"
+            href="https://api.whatsapp.com/send/?phone=5562994896602"
             target="_blank"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-green-500 to-green-600 px-8 py-4 text-base font-bold text-white hover:scale-105 transition-transform"
           >
-            <Phone className="h-5 w-5" /> Falar no WhatsApp: (62) 9998-1212
+            <Phone className="h-5 w-5" /> Falar no WhatsApp: (62) 99489-6602
           </a>
         </div>
       </section>
