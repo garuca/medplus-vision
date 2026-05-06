@@ -117,7 +117,7 @@ const banners = {
   ],
   footer: {
     titulo: "Precisa de ajuda?",
-    descricao: "Nosso suporte está disponível 24/7",
+    descricao: "Atendimento rápido pelo WhatsApp",
     botao: "Falar no WhatsApp",
   },
 };

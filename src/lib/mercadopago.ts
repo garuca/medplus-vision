@@ -5,5 +5,5 @@ export const MP_CONFIG = {
 
 export const MP_CLIENT = {
   clientId: "8260797823657487",
-  clientSecret: "FТOaLtZzbftTlxYcQiK×bТІ0wT89МvpX",
+  clientSecret: "FT0aLtZzbftTxYcQiKxbTl0wT89MvpX",
 };
