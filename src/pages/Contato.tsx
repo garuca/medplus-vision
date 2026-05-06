@@ -23,9 +23,9 @@ import {
 } from "lucide-react";
 
 const contactInfo = {
-  phone: "(62) 3519-9974",
-  whatsapp: "556294896602",
-  whatsappJuliano: "556294896602",
+  phone: "(62) 99489-6602",
+  whatsapp: "5562994896602",
+  whatsappJuliano: "5562994896602",
   email: "juliano@medplushospitalar.com.br",
   address:
     "Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia - GO, 74917-196",
@@ -44,26 +44,26 @@ const departments = [
   {
     icon: Calendar,
     title: "Locação",
-    email: "locacao@medhospitalar.com.br",
-    whatsapp: "556294896602",
+    email: "locacao@medplushospitalar.com.br",
+    whatsapp: "5562994896602",
     desc: "Planos de locação de equipamentos",
-    contato: "Lucas",
+    contato: "Juliano Rodrigues",
   },
   {
     icon: Building2,
     title: "Registro de Preço",
-    email: "registro@medhospitalar.com.br",
-    whatsapp: "556294896602",
+    email: "registro@medplushospitalar.com.br",
+    whatsapp: "5562994896602",
     desc: "Contratos para órgãos públicos",
-    contato: "Lucas",
+    contato: "Juliano Rodrigues",
   },
   {
     icon: MessageCircle,
     title: "Assistência Técnica",
-    email: "tecnico@medhospitalar.com.br",
-    whatsapp: "556294896602",
+    email: "tecnico@medplushospitalar.com.br",
+    whatsapp: "5562994896602",
     desc: "Manutenção e suporte técnico",
-    contato: "Lucas",
+    contato: "Juliano Rodrigues",
   },
 ];
 
@@ -80,7 +80,7 @@ const faqs = [
     q: "Tem garantia?",
     a: "Todos os equipamentos possuem garantia de factory, além do suporte técnico especializado.",
   },
-  { q: "Atendem via WhatsApp?", a: "Sim! Você pode falar conosco pelo WhatsApp: (62) 9998-1212" },
+  { q: "Atendem via WhatsApp?", a: "Sim! Você pode falar conosco pelo WhatsApp: (62) 99489-6602" },
 ];
 
 export default function Contato() {
