@@ -174,16 +174,15 @@ export default function Produto() {
                   <input
                     type="number"
                     min={1}
-                    max={produto.estoque}
                     value={quantidade}
                     onChange={(e) => {
                       const val = parseInt(e.target.value) || 1;
-                      setQuantidade(Math.max(1, Math.min(val, produto.estoque)));
+                      setQuantidade(Math.max(1, val));
                     }}
                     className="w-16 text-center font-semibold bg-transparent border border-border rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                   <button
-                    onClick={() => setQuantidade(Math.min(produto.estoque, quantidade + 1))}
+                    onClick={() => setQuantidade(quantidade + 1)}
                     className="glass-card p-2 rounded-lg hover:bg-primary/10"
                   >
                     <Plus className="h-5 w-5" />
@@ -191,6 +190,27 @@ export default function Produto() {
                 </div>
                 <span className="text-sm text-muted-foreground">{produto.estoque} disponíveis</span>
               </div>
+
+              {quantidade > produto.estoque && (
+                <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-sm text-yellow-800">
+                    Quantidade solicitada ({quantidade}) acima do estoque disponível (
+                    {produto.estoque}).
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const msg = encodeURIComponent(
+                        `Olá, gostaria de consultar sobre a disponibilidade de ${quantidade} unidades do produto: ${produto.nome}`,
+                      );
+                      window.open(`https://wa.me/5511999999999?text=${msg}`, "_blank");
+                    }}
+                    className="mt-2 text-sm font-medium text-primary hover:underline"
+                  >
+                    Consultar um vendedor
+                  </button>
+                </div>
+              )}
 
               <div className="mt-6 flex gap-3">
                 <button
