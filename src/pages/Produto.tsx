@@ -171,9 +171,19 @@ export default function Produto() {
                   >
                     <Minus className="h-5 w-5" />
                   </button>
-                  <span className="w-12 text-center font-semibold">{quantidade}</span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={produto.estoque}
+                    value={quantidade}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value) || 1;
+                      setQuantidade(Math.max(1, Math.min(val, produto.estoque)));
+                    }}
+                    className="w-16 text-center font-semibold bg-transparent border border-border rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
                   <button
-                    onClick={() => setQuantidade(quantidade + 1)}
+                    onClick={() => setQuantidade(Math.min(produto.estoque, quantidade + 1))}
                     className="glass-card p-2 rounded-lg hover:bg-primary/10"
                   >
                     <Plus className="h-5 w-5" />
