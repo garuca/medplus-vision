@@ -16,7 +16,11 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { placeholderImages } from "../lib/images";
+
+import vendasImg from "../assets/Vendas de Equipamentos-Dj03NzmQ.jpg?url";
+import locacaoImg from "../assets/Locação de Equipamentos-BZcwMtwB.jpg?url";
+import assistenciaImg from "../assets/Assistência Técnica-RzfbRCJQ.jpg?url";
+import consultoriaImg from "../assets/Consultoria Hospitalar-c1WWgGJ9.jpg?url";
 
 const services = [
   {
@@ -35,7 +39,7 @@ const services = [
       "Entrega e instalação completas",
     ],
     color: "from-blue-500 to-cyan-500",
-    image: placeholderImages.servico,
+    image: vendasImg,
   },
   {
     id: "locacao",
@@ -53,7 +57,7 @@ const services = [
       "Sem burocracia para sua instituição",
     ],
     color: "from-purple-500 to-pink-500",
-    image: placeholderImages.servico,
+    image: locacaoImg,
   },
   {
     id: "assistencia",
@@ -71,7 +75,7 @@ const services = [
       "Laudos técnicos e certificações",
     ],
     color: "from-orange-500 to-amber-500",
-    image: placeholderImages.servico,
+    image: assistenciaImg,
   },
   {
     id: "consultoria",
@@ -89,7 +93,7 @@ const services = [
       "Compliance regulatório",
     ],
     color: "from-emerald-500 to-teal-500",
-    image: placeholderImages.servico,
+    image: consultoriaImg,
   },
 ];
 
