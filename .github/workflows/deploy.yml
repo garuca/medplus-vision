@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: https://medplushospitalar.com.br
+      url: https://medplushospitalar.net.br
     steps:
       - name: Checkout
         uses: actions/checkout@v4
