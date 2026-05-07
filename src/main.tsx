@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { Router, Route, Switch, useLocation } from "wouter";
 import "./styles.css";
@@ -72,8 +72,17 @@ function MainRoutes() {
 }
 
 function AppContent() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const isAdmin = location.includes("/admin");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get("redirect");
+    if (redirect) {
+      window.history.replaceState(null, "", redirect);
+      setLocation(redirect);
+    }
+  }, [setLocation]);
 
   if (isAdmin) {
     return <AdminRoutes />;

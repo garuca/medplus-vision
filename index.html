@@ -4,6 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MedPlus Comercial Hospitalar</title>
+    <script>
+      (function () {
+        var path = window.location.pathname;
+        if (
+          path !== "/" &&
+          !path.endsWith(".html") &&
+          !path.endsWith(".js") &&
+          !path.endsWith(".css") &&
+          !path.endsWith(".png") &&
+          !path.endsWith(".jpg") &&
+          !path.endsWith(".webp") &&
+          !path.endsWith(".svg") &&
+          !path.endsWith(".ico")
+        ) {
+          var redirect = path;
+          if (redirect.endsWith("/")) {
+            redirect = redirect.substring(0, redirect.length - 1);
+          }
+          window.history.replaceState(null, "", "/?redirect=" + encodeURIComponent(redirect));
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
