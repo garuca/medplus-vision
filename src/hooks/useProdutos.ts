@@ -22,6 +22,7 @@ interface ProdutoFormatado {
   peso: number;
   destaque?: boolean;
   ativo?: boolean;
+  especificacoes?: string;
 }
 
 export function useProdutos() {
@@ -97,6 +98,7 @@ export function useProdutos() {
           peso: Number(p.peso) || 0,
           destaque: p.destaque,
           ativo: p.ativo,
+          especificacoes: p.especificacoes || "",
         }));
 
         setProdutos(formatados);
@@ -153,7 +155,6 @@ export function useProdutoById(id: string) {
               imagemPrincipal: data.imagem_principal || data.imagem || "",
               imagensSecundarias: data.imagens_secundarias || [],
               categoria: data.categoria,
-              subcategoria: data.subcategoria || "",
               marca: data.marca || "",
               sku: data.sku,
               estoque: data.estoque,
@@ -161,6 +162,7 @@ export function useProdutoById(id: string) {
               peso: Number(data.peso) || 0,
               destaque: data.destaque,
               ativo: data.ativo,
+              especificacoes: data.especificacoes || "",
             });
             setLoading(false);
             return;

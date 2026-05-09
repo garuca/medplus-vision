@@ -269,14 +269,24 @@ export default function Produto() {
               {/* Especificações */}
               <div className="mt-6 glass-card p-4">
                 <h3 className="font-semibold mb-3">Especificações Técnicas</h3>
-                <div className="space-y-2">
-                  {Object.entries(produto.especificacoes || {}).map(([key, value]) => (
-                    <div key={key} className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{key}:</span>
-                      <span className="font-medium">{value}</span>
-                    </div>
-                  ))}
-                </div>
+                {produto.especificacoes ? (
+                  <div className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
+                    {produto.especificacoes}
+                  </div>
+                ) : Object.entries(produto.especificacoes || {}).length > 0 ? (
+                  <div className="space-y-2">
+                    {Object.entries(produto.especificacoes || {}).map(([key, value]) => (
+                      <div key={key} className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{key}:</span>
+                        <span className="font-medium">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Nenhuma especificação técnica disponível.
+                  </p>
+                )}
               </div>
             </div>
           </div>

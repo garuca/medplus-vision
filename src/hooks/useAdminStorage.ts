@@ -140,6 +140,7 @@ export function useAdminStorage() {
         peso: produto.peso,
         destaque: produto.destaque,
         ativo: produto.ativo,
+        especificacoes: produto.especificacoes,
       })
       .select()
       .single();
@@ -167,6 +168,7 @@ export function useAdminStorage() {
     if (data.peso !== undefined) updateData.peso = data.peso;
     if (data.destaque !== undefined) updateData.destaque = data.destaque;
     if (data.ativo !== undefined) updateData.ativo = data.ativo;
+    if (data.especificacoes !== undefined) updateData.especificacoes = data.especificacoes;
 
     const { error } = await supabase.from("produtos").update(updateData).eq("id", id);
 

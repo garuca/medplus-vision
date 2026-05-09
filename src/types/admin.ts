@@ -17,6 +17,7 @@ export interface Produto {
   peso: number;
   destaque?: boolean;
   ativo?: boolean;
+  especificacoes?: string;
   createdAt: string;
 }
 
@@ -41,8 +42,8 @@ export interface Pedido {
     preco: number;
   }[];
   total: number;
-  status: 'pendente' | 'processando' | 'enviado' | 'entregue' | 'cancelado';
-  formaPagamento: 'whatsapp' | 'mercadopago' | 'pix' | 'boleto';
+  status: "pendente" | "processando" | "enviado" | "entregue" | "cancelado";
+  formaPagamento: "whatsapp" | "mercadopago" | "pix" | "boleto";
   createdAt: string;
 }
 

@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { ArrowLeft, Save, Upload, X, Image, Trash2, Eye, AlertCircle, CheckCircle, Package } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Upload,
+  X,
+  Image,
+  Trash2,
+  Eye,
+  AlertCircle,
+  CheckCircle,
+  Package,
+} from "lucide-react";
 import { AdminLayout } from "../../components/AdminLayout";
 import { useAdminStorage } from "../../hooks/useAdminStorage";
 import { uploadImage, isBase64 } from "../../lib/imageUpload";
@@ -8,7 +19,7 @@ import { uploadImage, isBase64 } from "../../lib/imageUpload";
 export default function NovoProduto() {
   const [, setLocation] = useLocation();
   const { categorias, addProduto, updateProduto, produtos, loading } = useAdminStorage();
-  
+
   const [produtoId, setProdutoId] = useState<string | null>(null);
   const [form, setForm] = useState({
     nome: "",
@@ -29,6 +40,7 @@ export default function NovoProduto() {
     peso: "",
     destaque: false,
     ativo: true,
+    especificacoes: "",
   });
   const [saving, setSaving] = useState(false);
   const [previewModal, setPreviewModal] = useState<string | null>(null);
@@ -59,6 +71,7 @@ export default function NovoProduto() {
           peso: produto.peso.toString(),
           destaque: produto.destaque || false,
           ativo: produto.ativo !== false,
+          especificacoes: produto.especificacoes || "",
         });
       }
     }
@@ -98,7 +111,8 @@ export default function NovoProduto() {
       descricao: form.descricao,
       preco: parseFloat(form.preco),
       precoOriginal: form.precoOriginal ? parseFloat(form.precoOriginal) : undefined,
-      imagemPrincipal: form.imagemPrincipal && !isBase64(form.imagemPrincipal) ? form.imagemPrincipal : "",
+      imagemPrincipal:
+        form.imagemPrincipal && !isBase64(form.imagemPrincipal) ? form.imagemPrincipal : "",
       imagensSecundarias,
       categoria: form.categoria,
       estoque: parseInt(form.estoque) || 0,
@@ -111,6 +125,7 @@ export default function NovoProduto() {
       peso: parseFloat(form.peso) || 0,
       destaque: form.destaque,
       ativo: form.ativo,
+      especificacoes: form.especificacoes,
     };
 
     try {
@@ -154,11 +169,19 @@ export default function NovoProduto() {
               <ArrowLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-white">{produtoId ? "Editar Produto" : "Novo Produto"}</h1>
-              <p className="text-gray-400">{produtoId ? "Atualize as informações" : "Preencha os dados do produto"}</p>
+              <h1 className="text-2xl font-bold text-white">
+                {produtoId ? "Editar Produto" : "Novo Produto"}
+              </h1>
+              <p className="text-gray-400">
+                {produtoId ? "Atualize as informações" : "Preencha os dados do produto"}
+              </p>
             </div>
           </div>
-          <button type="submit" disabled={saving} className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+          <button
+            type="submit"
+            disabled={saving}
+            className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2"
+          >
             <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar"}
           </button>
         </div>
@@ -169,7 +192,9 @@ export default function NovoProduto() {
               <h2 className="text-lg font-semibold text-white mb-4">Informações Gerais</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">Nome do Produto *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Nome do Produto *
+                  </label>
                   <input
                     type="text"
                     value={form.nome}
@@ -180,7 +205,9 @@ export default function NovoProduto() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">Descrição *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Descrição *
+                  </label>
                   <textarea
                     value={form.descricao}
                     onChange={(e) => setForm({ ...form, descricao: e.target.value })}
@@ -190,11 +217,30 @@ export default function NovoProduto() {
                     className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Especificações Técnicas
+                  </label>
+                  <textarea
+                    value={form.especificacoes}
+                    onChange={(e) => setForm({ ...form, especificacoes: e.target.value })}
+                    placeholder="Ex: Material: PVC&#10;Tamaño: 10cm&#10;Cor: Branco"
+                    rows={5}
+                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use Enter para separar cada especificação em uma nova linha
+                  </p>
+                </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1.5">Preço *</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                      Preço *
+                    </label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        R$
+                      </span>
                       <input
                         type="number"
                         step="0.01"
@@ -207,9 +253,13 @@ export default function NovoProduto() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1.5">Preço Original (desconto)</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                      Preço Original (desconto)
+                    </label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        R$
+                      </span>
                       <input
                         type="number"
                         step="0.01"
@@ -226,7 +276,9 @@ export default function NovoProduto() {
 
             <div className="glass-card-dark p-6">
               <h2 className="text-lg font-semibold text-white mb-4">Imagens do Produto</h2>
-              <p className="text-sm text-gray-400 mb-4">Envie imagens em formato JPG ou PNG (máx 5MB cada)</p>
+              <p className="text-sm text-gray-400 mb-4">
+                Envie imagens em formato JPG ou PNG (máx 5MB cada)
+              </p>
               <div className="grid gap-4 sm:grid-cols-2">
                 {imageFields.map((img) => (
                   <div key={img.key}>
@@ -247,7 +299,11 @@ export default function NovoProduto() {
                       >
                         {form[img.key as keyof typeof form] ? (
                           <div className="relative h-full w-full">
-                            <img src={form[img.key as keyof typeof form] as string} alt="" className="h-full w-full object-cover rounded-xl" />
+                            <img
+                              src={form[img.key as keyof typeof form] as string}
+                              alt=""
+                              className="h-full w-full object-cover rounded-xl"
+                            />
                             <button
                               type="button"
                               onClick={(e) => {
@@ -276,7 +332,9 @@ export default function NovoProduto() {
               <h2 className="text-lg font-semibold text-white mb-4">Informações para Frete</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">Peso (kg) *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Peso (kg) *
+                  </label>
                   <input
                     type="number"
                     step="0.01"
@@ -288,7 +346,9 @@ export default function NovoProduto() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">SKU/Código *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    SKU/Código *
+                  </label>
                   <input
                     type="text"
                     value={form.sku}
@@ -345,7 +405,9 @@ export default function NovoProduto() {
               <h2 className="text-lg font-semibold text-white mb-4">Status</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">Categoria *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Categoria *
+                  </label>
                   <select
                     value={form.categoria}
                     onChange={(e) => setForm({ ...form, categoria: e.target.value })}
@@ -354,12 +416,16 @@ export default function NovoProduto() {
                   >
                     <option value="">Selecione...</option>
                     {categorias.map((c) => (
-                      <option key={c.id} value={c.nome}>{c.nome}</option>
+                      <option key={c.id} value={c.nome}>
+                        {c.nome}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">Estoque *</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Estoque *
+                  </label>
                   <input
                     type="number"
                     value={form.estoque}
@@ -379,7 +445,9 @@ export default function NovoProduto() {
                     onClick={() => setForm({ ...form, ativo: !form.ativo })}
                     className={`w-12 h-6 rounded-full transition-colors ${form.ativo ? "bg-green-500" : "bg-gray-700"}`}
                   >
-                    <span className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.ativo ? "translate-x-6" : "translate-x-0"}`} />
+                    <span
+                      className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.ativo ? "translate-x-6" : "translate-x-0"}`}
+                    />
                   </button>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
@@ -392,7 +460,9 @@ export default function NovoProduto() {
                     onClick={() => setForm({ ...form, destaque: !form.destaque })}
                     className={`w-12 h-6 rounded-full transition-colors ${form.destaque ? "bg-primary" : "bg-gray-700"}`}
                   >
-                    <span className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.destaque ? "translate-x-6" : "translate-x-0"}`} />
+                    <span
+                      className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.destaque ? "translate-x-6" : "translate-x-0"}`}
+                    />
                   </button>
                 </div>
               </div>
