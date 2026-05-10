@@ -22,6 +22,9 @@ interface ProdutoFormatado {
   peso: number;
   destaque?: boolean;
   ativo?: boolean;
+  flag_oferta?: boolean;
+  flag_novidade?: boolean;
+  flag_mais_vendido?: boolean;
   especificacoes?: string;
 }
 
@@ -98,6 +101,9 @@ export function useProdutos() {
           peso: Number(p.peso) || 0,
           destaque: p.destaque,
           ativo: p.ativo,
+          flag_oferta: p.flag_oferta,
+          flag_novidade: p.flag_novidade,
+          flag_mais_vendido: p.flag_mais_vendido,
           especificacoes: p.especificacoes || "",
         }));
 

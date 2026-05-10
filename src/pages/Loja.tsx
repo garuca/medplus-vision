@@ -11,7 +11,7 @@ import {
   TrendingUp,
   Award,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProdutos } from "../hooks/useProdutos";
 import { SectionTitle } from "../components/SectionTitle";
 import { useCart } from "../context/CartContext";
@@ -30,6 +30,7 @@ const categoriasLoja = [
 ];
 
 export default function Loja() {
+  const [location] = useLocation();
   const [busca, setBusca] = useState("");
   const [ordem, setOrdem] = useState("relevancia");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
@@ -41,7 +42,14 @@ export default function Loja() {
 
   const getProdutoLink = (id: string) => `/produto/${id}`;
 
+  const filtroAtivo = new URLSearchParams(location.split("?")[1] || "").get("filtro");
+
   const produtosFiltrados = allProducts
+    .filter((p) => {
+      if (filtroAtivo === "novidades") return p.flag_novidade;
+      if (filtroAtivo === "mais-vendidos") return p.flag_mais_vendido;
+      return true;
+    })
     .filter((p) => p.nome.toLowerCase().includes(busca.toLowerCase()))
     .sort((a, b) => {
       if (ordem === "menor") return a.preco - b.preco;

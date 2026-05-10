@@ -40,6 +40,9 @@ export default function NovoProduto() {
     peso: "",
     destaque: false,
     ativo: true,
+    flag_oferta: false,
+    flag_novidade: false,
+    flag_mais_vendido: false,
     especificacoes: "",
   });
   const [saving, setSaving] = useState(false);
@@ -71,6 +74,9 @@ export default function NovoProduto() {
           peso: produto.peso.toString(),
           destaque: produto.destaque || false,
           ativo: produto.ativo !== false,
+          flag_oferta: produto.flag_oferta || false,
+          flag_novidade: produto.flag_novidade || false,
+          flag_mais_vendido: produto.flag_mais_vendido || false,
           especificacoes: produto.especificacoes || "",
         });
       }
@@ -125,6 +131,9 @@ export default function NovoProduto() {
       peso: parseFloat(form.peso) || 0,
       destaque: form.destaque,
       ativo: form.ativo,
+      flag_oferta: form.flag_oferta,
+      flag_novidade: form.flag_novidade,
+      flag_mais_vendido: form.flag_mais_vendido,
       especificacoes: form.especificacoes,
     };
 
@@ -453,7 +462,7 @@ export default function NovoProduto() {
                 <div className="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
                   <div>
                     <p className="font-medium text-white">Destaque</p>
-                    <p className="text-xs text-gray-400">Destaque na home</p>
+                    <p className="text-xs text-gray-400">Produto em destaque na home</p>
                   </div>
                   <button
                     type="button"
@@ -462,6 +471,51 @@ export default function NovoProduto() {
                   >
                     <span
                       className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.destaque ? "translate-x-6" : "translate-x-0"}`}
+                    />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">Melhores Ofertas</p>
+                    <p className="text-xs text-gray-400">Aparece na seção de ofertas</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, flag_oferta: !form.flag_oferta })}
+                    className={`w-12 h-6 rounded-full transition-colors ${form.flag_oferta ? "bg-primary" : "bg-gray-700"}`}
+                  >
+                    <span
+                      className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.flag_oferta ? "translate-x-6" : "translate-x-0"}`}
+                    />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">Novidades</p>
+                    <p className="text-xs text-gray-400">Aparece na seção de novidades</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, flag_novidade: !form.flag_novidade })}
+                    className={`w-12 h-6 rounded-full transition-colors ${form.flag_novidade ? "bg-primary" : "bg-gray-700"}`}
+                  >
+                    <span
+                      className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.flag_novidade ? "translate-x-6" : "translate-x-0"}`}
+                    />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-900/30 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">Mais Vendidos</p>
+                    <p className="text-xs text-gray-400">Aparece na seção de mais vendidos</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, flag_mais_vendido: !form.flag_mais_vendido })}
+                    className={`w-12 h-6 rounded-full transition-colors ${form.flag_mais_vendido ? "bg-primary" : "bg-gray-700"}`}
+                  >
+                    <span
+                      className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.flag_mais_vendido ? "translate-x-6" : "translate-x-0"}`}
                     />
                   </button>
                 </div>

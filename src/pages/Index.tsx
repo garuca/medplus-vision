@@ -124,6 +124,9 @@ const banners = {
 
 export default function Index() {
   const { adicionarProduto } = useCart();
+  const { produtos } = useProdutos();
+  const destaques = produtos.filter((p) => p.destaque);
+  const ofertas = produtos.filter((p) => p.flag_oferta).slice(0, 4);
 
   return (
     <>
@@ -279,7 +282,7 @@ export default function Index() {
         <div className="mx-auto max-w-7xl">
           <SectionTitle eyebrow="Destaques" title="Produtos em Destaque" />
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-            {products.map((product) => (
+            {destaques.map((product) => (
               <div key={product.id} className="glass-card group flex flex-col p-3">
                 <Link to={`/produto/${product.id}`}>
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-white/50">
@@ -387,12 +390,12 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Mais Ofertas */}
+      {/* Melhores Ofertas */}
       <section className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <SectionTitle eyebrow="Ofertas" title="Melhores Ofertas" />
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {products.slice(0, 4).map((product) => (
+            {ofertas.map((product) => (
               <div key={product.id} className="glass-card group flex flex-col p-3">
                 <Link to={`/produto/${product.id}`}>
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-white/50">

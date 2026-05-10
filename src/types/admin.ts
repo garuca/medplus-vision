@@ -17,6 +17,9 @@ export interface Produto {
   peso: number;
   destaque?: boolean;
   ativo?: boolean;
+  flag_oferta?: boolean;
+  flag_novidade?: boolean;
+  flag_mais_vendido?: boolean;
   especificacoes?: string;
   createdAt: string;
 }

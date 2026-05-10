@@ -101,6 +101,9 @@ export function useAdminStorage() {
             peso: Number(p.peso) || 0,
             destaque: p.destaque,
             ativo: p.ativo,
+            flag_oferta: p.flag_oferta,
+            flag_novidade: p.flag_novidade,
+            flag_mais_vendido: p.flag_mais_vendido,
             createdAt: p.created_at,
           })),
         );
@@ -140,6 +143,9 @@ export function useAdminStorage() {
         peso: produto.peso,
         destaque: produto.destaque,
         ativo: produto.ativo,
+        flag_oferta: produto.flag_oferta,
+        flag_novidade: produto.flag_novidade,
+        flag_mais_vendido: produto.flag_mais_vendido,
         especificacoes: produto.especificacoes,
       })
       .select()
@@ -168,6 +174,9 @@ export function useAdminStorage() {
     if (data.peso !== undefined) updateData.peso = data.peso;
     if (data.destaque !== undefined) updateData.destaque = data.destaque;
     if (data.ativo !== undefined) updateData.ativo = data.ativo;
+    if (data.flag_oferta !== undefined) updateData.flag_oferta = data.flag_oferta;
+    if (data.flag_novidade !== undefined) updateData.flag_novidade = data.flag_novidade;
+    if (data.flag_mais_vendido !== undefined) updateData.flag_mais_vendido = data.flag_mais_vendido;
     if (data.especificacoes !== undefined) updateData.especificacoes = data.especificacoes;
 
     const { error } = await supabase.from("produtos").update(updateData).eq("id", id);
