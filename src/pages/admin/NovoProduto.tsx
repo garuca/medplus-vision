@@ -425,7 +425,7 @@ export default function NovoProduto() {
                   >
                     <option value="">Selecione...</option>
                     {categorias.map((c) => (
-                      <option key={c.id} value={c.nome}>
+                      <option key={c.id} value={c.slug}>
                         {c.nome}
                       </option>
                     ))}

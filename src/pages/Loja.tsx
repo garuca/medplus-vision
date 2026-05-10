@@ -1,48 +1,63 @@
 import { Link, useLocation } from "wouter";
-import {
-  Search,
-  Filter,
-  X,
-  Minus,
-  Plus,
-  ArrowLeft,
-  ArrowRight,
-  Package,
-  TrendingUp,
-  Award,
-} from "lucide-react";
-import { useState, useEffect } from "react";
+import { Search, Filter, X, ArrowLeft, ArrowRight, Package, TrendingUp, Award } from "lucide-react";
+import { useState, useMemo } from "react";
 import { useProdutos } from "../hooks/useProdutos";
+import { useCategorias } from "../hooks/useCategorias";
 import { SectionTitle } from "../components/SectionTitle";
 import { useCart } from "../context/CartContext";
-
-const categoriasLoja = [
-  { slug: "urgencia-emergencia", nome: "Urgência e Emergência", cor: "from-red-500 to-red-600" },
-  { slug: "cardiorespiratorio", nome: "Cardiorespiratório", cor: "from-orange-500 to-orange-600" },
-  { slug: "diagnostico", nome: "Diagnóstico", cor: "from-purple-500 to-purple-600" },
-  {
-    slug: "instrumentais-cirurgicos",
-    nome: "Instrumentais Cirúrgicos",
-    cor: "from-violet-500 to-violet-600",
-  },
-  { slug: "sinais-vitais", nome: "Sinais Vitais", cor: "from-rose-500 to-rose-600" },
-  { slug: "especialidades", nome: "Especialidades", cor: "from-indigo-500 to-indigo-600" },
-];
 
 export default function Loja() {
   const [location] = useLocation();
   const [busca, setBusca] = useState("");
   const [ordem, setOrdem] = useState("relevancia");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
+  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<Set<string>>(new Set());
+  const [marcasSelecionadas, setMarcasSelecionadas] = useState<Set<string>>(new Set());
   const { adicionarProduto } = useCart();
   const [pagina, setPagina] = useState(1);
   const produtosPorPagina = 12;
 
   const { produtos: allProducts, loading } = useProdutos();
+  const { categorias } = useCategorias();
 
   const getProdutoLink = (id: string) => `/produto/${id}`;
 
   const filtroAtivo = new URLSearchParams(location.split("?")[1] || "").get("filtro");
+
+  const marcas = useMemo(() => {
+    const set = new Set<string>();
+    allProducts.forEach((p) => {
+      if (p.marca) set.add(p.marca);
+    });
+    return Array.from(set).sort();
+  }, [allProducts]);
+
+  const toggleCategoria = (slug: string) => {
+    setCategoriasSelecionadas((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
+    setPagina(1);
+  };
+
+  const toggleMarca = (marca: string) => {
+    setMarcasSelecionadas((prev) => {
+      const next = new Set(prev);
+      if (next.has(marca)) next.delete(marca);
+      else next.add(marca);
+      return next;
+    });
+    setPagina(1);
+  };
+
+  const limparFiltros = () => {
+    setCategoriasSelecionadas(new Set());
+    setMarcasSelecionadas(new Set());
+    setBusca("");
+    setPagina(1);
+  };
 
   const produtosFiltrados = allProducts
     .filter((p) => {
@@ -50,11 +65,19 @@ export default function Loja() {
       if (filtroAtivo === "mais-vendidos") return p.flag_mais_vendido;
       return true;
     })
+    .filter((p) => {
+      if (categoriasSelecionadas.size === 0) return true;
+      return categoriasSelecionadas.has(p.categoria);
+    })
+    .filter((p) => {
+      if (marcasSelecionadas.size === 0) return true;
+      return p.marca && marcasSelecionadas.has(p.marca);
+    })
     .filter((p) => p.nome.toLowerCase().includes(busca.toLowerCase()))
     .sort((a, b) => {
       if (ordem === "menor") return a.preco - b.preco;
       if (ordem === "maior") return b.preco - a.preco;
-      if (ordem === "nome") return a.nome.localeCompare(b.nome);
+      if (ordem === "nome") return a.nome.localeCompare(b.nome, "pt-BR");
       return 0;
     });
 
@@ -139,35 +162,52 @@ export default function Loja() {
             {/* Sidebar Filtros */}
             {mostrarFiltros && (
               <div className="glass-card p-4 lg:col-span-1">
-                <h3 className="font-semibold mb-4">Filtros</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold">Filtros</h3>
+                  {(categoriasSelecionadas.size > 0 || marcasSelecionadas.size > 0 || busca) && (
+                    <button
+                      onClick={limparFiltros}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      Limpar
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-4">
                   <div>
                     <h4 className="text-sm font-medium mb-2">Categoria</h4>
-                    <div className="space-y-2">
-                      {[
-                        "Urgência e Emergência",
-                        "Sinais Vitais",
-                        "Diagnóstico",
-                        "Instrumentais Cirúrgicos",
-                      ].map((cat) => (
-                        <label key={cat} className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" className="rounded border-border" />
-                          <span className="text-sm">{cat}</span>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {categorias.map((cat) => (
+                        <label key={cat.slug} className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={categoriasSelecionadas.has(cat.slug)}
+                            onChange={() => toggleCategoria(cat.slug)}
+                            className="rounded border-border"
+                          />
+                          <span className="text-sm">{cat.nome}</span>
                         </label>
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-medium mb-2">Marca</h4>
-                    <div className="space-y-2">
-                      {["MedPlus", "Ambu", "Welch Allyn"].map((marca) => (
-                        <label key={marca} className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" className="rounded border-border" />
-                          <span className="text-sm">{marca}</span>
-                        </label>
-                      ))}
+                  {marcas.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">Marca</h4>
+                      <div className="space-y-2 max-h-48 overflow-y-auto">
+                        {marcas.map((marca) => (
+                          <label key={marca} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={marcasSelecionadas.has(marca)}
+                              onChange={() => toggleMarca(marca)}
+                              className="rounded border-border"
+                            />
+                            <span className="text-sm">{marca}</span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}

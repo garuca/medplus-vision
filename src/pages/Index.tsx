@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   Star,
@@ -25,71 +26,47 @@ import {
   MessageCircle,
   Wallet,
   Lock,
+  Package,
 } from "lucide-react";
 import { products } from "../data/produtos";
 import { useProdutos } from "../hooks/useProdutos";
+import { useCategorias } from "../hooks/useCategorias";
 import { placeholderImages } from "../lib/images";
 import { SectionTitle } from "../components/SectionTitle";
 import { useCart } from "../context/CartContext";
 
-const categoriesMenu = [
-  {
-    slug: "urgencia-emergencia",
-    nome: "Urgência e Emergência",
-    icone: AlertTriangle,
-    cor: "bg-red-100 text-red-600",
-  },
-  {
-    slug: "sinais-vitais",
-    nome: "Sinais Vitais",
-    icone: HeartPulse,
-    cor: "bg-rose-100 text-rose-600",
-  },
-  {
-    slug: "diagnostico",
-    nome: "Diagnóstico",
-    icone: Microscope,
-    cor: "bg-purple-100 text-purple-600",
-  },
-  {
-    slug: "instrumentais-cirurgicos",
-    nome: "Instrumentais Cirúrgicos",
-    icone: Zap,
-    cor: "bg-violet-100 text-violet-600",
-  },
-  {
-    slug: "especialidades",
-    nome: "Especialidades",
-    icone: HeartHandshake,
-    cor: "bg-indigo-100 text-indigo-600",
-  },
-  {
-    slug: "area-do-academico",
-    nome: "Área do Acadêmico",
-    icone: GraduationCap,
-    cor: "bg-blue-100 text-blue-600",
-  },
-  { slug: "hospiluvas", nome: "HOSPILUVAS", icone: Briefcase, cor: "bg-cyan-100 text-cyan-600" },
-  { slug: "hospi-kids", nome: "HOSPI KIDS", icone: Baby, cor: "bg-pink-100 text-pink-600" },
-  { slug: "hospivet", nome: "HOSPIVET", icone: Dog, cor: "bg-amber-100 text-amber-600" },
-  {
-    slug: "cardiorespiratorio",
-    nome: "Cardiorespiratório",
-    icone: Activity,
-    cor: "bg-orange-100 text-orange-600",
-  },
-  {
-    slug: "limpeza-hospitalar",
-    nome: "Limpeza Hospitalar",
-    icone: Droplets,
-    cor: "bg-teal-100 text-teal-600",
-  },
-  {
-    slug: "ortopedia-reabilitacao",
-    nome: "Ortopedia e Reabilitação",
-    icone: Bone,
-    cor: "bg-emerald-100 text-emerald-600",
-  },
+const categoryIcons: Record<string, LucideIcon> = {
+  "urgencia-emergencia": AlertTriangle,
+  "sinais-vitais": HeartPulse,
+  diagnostico: Microscope,
+  "instrumentais-cirurgicos": Zap,
+  especialidades: HeartHandshake,
+  "area-do-academico": GraduationCap,
+  hospiluvas: Briefcase,
+  "hospi-kids": Baby,
+  hospivet: Dog,
+  cardiorespiratorio: Activity,
+  "limpeza-hospitalar": Droplets,
+  "ortopedia-reabilitacao": Bone,
+};
+
+const categoryColors = [
+  "bg-red-100 text-red-600",
+  "bg-rose-100 text-rose-600",
+  "bg-purple-100 text-purple-600",
+  "bg-violet-100 text-violet-600",
+  "bg-indigo-100 text-indigo-600",
+  "bg-blue-100 text-blue-600",
+  "bg-cyan-100 text-cyan-600",
+  "bg-pink-100 text-pink-600",
+  "bg-amber-100 text-amber-600",
+  "bg-orange-100 text-orange-600",
+  "bg-teal-100 text-teal-600",
+  "bg-emerald-100 text-emerald-600",
+  "bg-green-100 text-green-600",
+  "bg-yellow-100 text-yellow-600",
+  "bg-sky-100 text-sky-600",
+  "bg-lime-100 text-lime-600",
 ];
 
 const clientLogos = Array.from({ length: 16 }, (_, i) => ({
@@ -125,6 +102,7 @@ const banners = {
 export default function Index() {
   const { adicionarProduto } = useCart();
   const { produtos } = useProdutos();
+  const { categorias } = useCategorias();
   const destaques = produtos.filter((p) => p.destaque);
   const ofertas = produtos.filter((p) => p.flag_oferta).slice(0, 4);
 
@@ -497,8 +475,9 @@ export default function Index() {
         <div className="mx-auto max-w-7xl">
           <SectionTitle eyebrow="Categorias" title="Navegue por Categoria" />
           <div className="mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
-            {categoriesMenu.map((cat) => {
-              const Icon = cat.icone;
+            {categorias.map((cat, i) => {
+              const Icon = categoryIcons[cat.slug] || Package;
+              const cor = categoryColors[i % categoryColors.length];
               return (
                 <Link
                   key={cat.slug}
@@ -507,7 +486,7 @@ export default function Index() {
                 >
                   <div className="glass-card flex flex-col items-center justify-center p-5 text-center hover:bg-white/80 transition-all group-hover:scale-105">
                     <div
-                      className={`flex h-14 w-14 items-center justify-center rounded-2xl ${cat.cor} mb-3 group-hover:scale-110 transition-transform`}
+                      className={`flex h-14 w-14 items-center justify-center rounded-2xl ${cor} mb-3 group-hover:scale-110 transition-transform`}
                     >
                       <Icon className="h-7 w-7" strokeWidth={1.5} />
                     </div>
