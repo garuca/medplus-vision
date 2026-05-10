@@ -7,7 +7,12 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string, nome: string) => Promise<{ error: Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    nome: string,
+    cpfCnpj: string,
+  ) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -41,17 +46,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string, nome: string) => {
+  const signUp = async (email: string, password: string, nome: string, cpfCnpj: string) => {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return { error };
 
     if (data.user) {
-      await supabase.from("perfis").upsert({
+      const { error: perfilError } = await supabase.from("perfis").upsert({
         id: data.user.id,
         email,
         nome,
+        cpf_cnpj: cpfCnpj,
         created_at: new Date().toISOString(),
       });
+      if (perfilError) {
+        console.error("Erro ao criar perfil:", perfilError);
+        return { error: perfilError };
+      }
     }
     return { error: null };
   };

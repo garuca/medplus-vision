@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Menu,
   X,
@@ -15,6 +15,14 @@ import { placeholderImages } from "../lib/images";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { LoginModal } from "./LoginModal";
+import { supabase } from "../lib/supabase";
+
+interface ProdutoSugestao {
+  id: string;
+  nome: string;
+  imagem_principal: string;
+  preco: number;
+}
 
 const links = [
   { to: "/", label: "Início" },
@@ -44,8 +52,11 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [search, setSearch] = useState("");
+  const [sugestoes, setSugestoes] = useState<ProdutoSugestao[]>([]);
+  const [showSugestoes, setShowSugestoes] = useState(false);
   const [showCategorias, setShowCategorias] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const { totaleItens } = useCart();
   const { user, signOut } = useAuth();
 
@@ -58,10 +69,55 @@ export function Header() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowSugestoes(false);
     if (search.trim()) {
       window.location.href = `/loja?busca=${encodeURIComponent(search)}`;
     }
   };
+
+  const buscarSugestoes = async (query: string) => {
+    if (query.length < 2) {
+      setSugestoes([]);
+      return;
+    }
+    try {
+      const { data, error } = await supabase
+        .from("produtos")
+        .select("id, nome, imagem_principal, preco")
+        .eq("ativo", true)
+        .ilike("nome", `%${query}%`)
+        .limit(5);
+      if (error) {
+        setSugestoes([]);
+        return;
+      }
+      if (data) {
+        setSugestoes(data);
+        setShowSugestoes(true);
+      }
+    } catch {
+      setSugestoes([]);
+    }
+  };
+
+  useEffect(() => {
+    if (!search) {
+      setSugestoes([]);
+      setShowSugestoes(false);
+      return;
+    }
+    const timer = setTimeout(() => buscarSugestoes(search), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node))
+        setShowSugestoes(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <header className="w-full">
@@ -110,7 +166,11 @@ export function Header() {
             </Link>
 
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="hidden flex-1 max-w-2xl mx-4 md:flex">
+            <form
+              onSubmit={handleSearch}
+              className="hidden flex-1 max-w-2xl mx-4 md:flex"
+              ref={searchRef as unknown as React.Ref<HTMLFormElement>}
+            >
               <div className="relative w-full">
                 <input
                   type="text"
@@ -126,6 +186,38 @@ export function Header() {
                 >
                   Buscar
                 </button>
+                {showSugestoes && sugestoes.length > 0 && (
+                  <div className="absolute top-full mt-1 left-0 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto">
+                    {sugestoes.map((produto) => (
+                      <Link
+                        key={produto.id}
+                        href={`/produto/${produto.id}`}
+                        onClick={() => {
+                          setShowSugestoes(false);
+                          setSearch("");
+                        }}
+                        className="flex items-center gap-3 px-4 py-2 hover:bg-cyan-50 transition"
+                      >
+                        <img
+                          src={
+                            produto.imagem_principal ||
+                            "https://placehold.co/100x100/cyan/white?text=P"
+                          }
+                          alt={produto.nome}
+                          className="w-10 h-10 object-cover rounded-lg"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            {produto.nome}
+                          </p>
+                          <p className="text-xs text-cyan-600 font-semibold">
+                            R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             </form>
 
@@ -195,6 +287,36 @@ export function Header() {
                 className="w-full rounded-full border border-gray-200 bg-gray-50 px-4 py-2.5 pl-10 text-sm focus:border-cyan-500 focus:bg-white focus:outline-none"
               />
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              {showSugestoes && sugestoes.length > 0 && (
+                <div className="absolute top-full mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto">
+                  {sugestoes.map((produto) => (
+                    <Link
+                      key={produto.id}
+                      href={`/produto/${produto.id}`}
+                      onClick={() => {
+                        setShowSugestoes(false);
+                        setSearch("");
+                      }}
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-cyan-50 transition"
+                    >
+                      <img
+                        src={
+                          produto.imagem_principal ||
+                          "https://placehold.co/100x100/cyan/white?text=P"
+                        }
+                        alt={produto.nome}
+                        className="w-10 h-10 object-cover rounded-lg"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{produto.nome}</p>
+                        <p className="text-xs text-cyan-600 font-semibold">
+                          R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </form>
         </div>
