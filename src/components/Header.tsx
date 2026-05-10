@@ -120,7 +120,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="w-full">
+    <header className="w-full relative z-[9999]">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-2 px-4">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
@@ -187,7 +187,7 @@ export function Header() {
                   Buscar
                 </button>
                 {showSugestoes && sugestoes.length > 0 && (
-                  <div className="absolute top-full mt-1 left-0 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto">
+                  <div className="absolute top-full mt-1 left-0 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[9999] max-h-80 overflow-y-auto">
                     {sugestoes.map((produto) => (
                       <Link
                         key={produto.id}
@@ -288,7 +288,7 @@ export function Header() {
               />
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               {showSugestoes && sugestoes.length > 0 && (
-                <div className="absolute top-full mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 max-h-80 overflow-y-auto">
+                <div className="absolute top-full mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[9999] max-h-80 overflow-y-auto">
                   {sugestoes.map((produto) => (
                     <Link
                       key={produto.id}
