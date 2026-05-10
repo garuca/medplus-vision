@@ -8,6 +8,7 @@ interface MercadoPagoCheckoutProps {
   amount: number;
   items: ItemCarrinho[];
   customerEmail?: string;
+  orderId?: string;
 }
 
 interface MPItem {
@@ -18,7 +19,12 @@ interface MPItem {
   unit_price: number;
 }
 
-export function MercadoPagoCheckout({ amount, items, customerEmail }: MercadoPagoCheckoutProps) {
+export function MercadoPagoCheckout({
+  amount,
+  items,
+  customerEmail,
+  orderId,
+}: MercadoPagoCheckoutProps) {
   const [loading, setLoading] = useState(true);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
@@ -48,6 +54,8 @@ export function MercadoPagoCheckout({ amount, items, customerEmail }: MercadoPag
 
         const origin = window.location.origin;
 
+        const successUrl = orderId ? `${origin}/success?order=${orderId}` : `${origin}/success`;
+
         const body = {
           items: [
             {
@@ -62,7 +70,7 @@ export function MercadoPagoCheckout({ amount, items, customerEmail }: MercadoPag
             email: customerEmail,
           },
           back_urls: {
-            success: origin + "/success",
+            success: successUrl,
             failure: origin + "/checkout?erro=pagamento",
             pending: origin + "/checkout?status=pending",
           },

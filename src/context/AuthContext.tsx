@@ -51,13 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) return { error };
 
     if (data.user) {
-      const { error: perfilError } = await supabase.from("perfis").upsert({
-        id: data.user.id,
-        email,
-        nome,
-        cpf_cnpj: cpfCnpj,
-        created_at: new Date().toISOString(),
-      });
+      const { error: perfilError } = await supabase
+        .from("perfis")
+        .update({
+          nome,
+          cpf_cnpj: cpfCnpj,
+        })
+        .eq("id", data.user.id);
       if (perfilError) {
         console.error("Erro ao criar perfil:", perfilError);
         return { error: perfilError };

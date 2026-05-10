@@ -33,10 +33,23 @@ export interface Categoria {
 
 export interface Pedido {
   id: string;
+  codigo: string;
+  user_id?: string;
   cliente: {
     nome: string;
     email: string;
     telefone: string;
+    documento: string;
+    tipoPessoa: string;
+  };
+  endereco: {
+    CEP: string;
+    endereco: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
   };
   produtos: {
     produtoId: string;
@@ -46,7 +59,9 @@ export interface Pedido {
   }[];
   total: number;
   status: "pendente" | "processando" | "enviado" | "entregue" | "cancelado";
-  formaPagamento: "whatsapp" | "mercadopago" | "pix" | "boleto";
+  formaPagamento: "whatsapp" | "mercadopago";
+  pagamentoStatus: "pendente" | "aprovado" | "recusado" | "cancelado" | "aguardando";
+  pagamentoId?: string;
   createdAt: string;
 }
 

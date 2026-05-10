@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { ShoppingCart, Search, Filter, Eye, Package, Clock, CheckCircle, XCircle, Truck, ChevronDown } from "lucide-react";
+import {
+  ShoppingCart,
+  Search,
+  Eye,
+  Package,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Truck,
+  CreditCard,
+  AlertCircle,
+} from "lucide-react";
 import { AdminLayout } from "../../components/AdminLayout";
 import { useAdminStorage } from "../../hooks/useAdminStorage";
 
@@ -11,28 +22,52 @@ const statusConfig = {
   cancelado: { label: "Cancelado", icon: XCircle, color: "bg-red-500/20 text-red-400" },
 };
 
+const pagamentoConfig = {
+  aguardando: { label: "Aguardando", icon: Clock, color: "bg-yellow-500/20 text-yellow-400" },
+  pendente: { label: "Pendente", icon: AlertCircle, color: "bg-orange-500/20 text-orange-400" },
+  aprovado: { label: "Aprovado", icon: CheckCircle, color: "bg-green-500/20 text-green-400" },
+  recusado: { label: "Recusado", icon: XCircle, color: "bg-red-500/20 text-red-400" },
+  cancelado: { label: "Cancelado", icon: XCircle, color: "bg-gray-500/20 text-gray-400" },
+};
+
+const statusOptions = [
+  { value: "pendente", label: "Pendente" },
+  { value: "processando", label: "Processando" },
+  { value: "enviado", label: "Enviado" },
+  { value: "entregue", label: "Entregue" },
+  { value: "cancelado", label: "Cancelado" },
+];
+
 export default function AdminPedidos() {
-  const { pedidos, loading } = useAdminStorage();
+  const { pedidos, loading, updatePedidoStatus } = useAdminStorage();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
 
   const filteredPedidos = pedidos.filter((p) => {
+    const clienteNome = (p.cliente?.nome || "").toLowerCase();
+    const clienteEmail = (p.cliente?.email || "").toLowerCase();
+    const searchLower = search.toLowerCase();
     const matchesSearch =
-      p.cliente.nome.toLowerCase().includes(search.toLowerCase()) ||
-      p.cliente.email.toLowerCase().includes(search.toLowerCase()) ||
-      p.id.toLowerCase().includes(search.toLowerCase());
+      clienteNome.includes(searchLower) ||
+      clienteEmail.includes(searchLower) ||
+      p.id.toLowerCase().includes(searchLower) ||
+      p.codigo.toLowerCase().includes(searchLower);
     const matchesStatus = !statusFilter || p.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const selectedPedido = pedidos.find((p) => p.id === selectedOrder);
 
+  const handleStatusChange = async (id: string, status: string) => {
+    await updatePedidoStatus(id, status as any);
+  };
+
   if (loading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
       </AdminLayout>
     );
@@ -68,8 +103,10 @@ export default function AdminPedidos() {
               className="bg-gray-900/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white"
             >
               <option value="">Todos os status</option>
-              {Object.entries(statusConfig).map(([key, config]) => (
-                <option key={key} value={key}>{config.label}</option>
+              {statusOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
             </select>
           </div>
@@ -87,31 +124,58 @@ export default function AdminPedidos() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-800">
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Pedido</th>
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Cliente</th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Pedido
+                    </th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Cliente
+                    </th>
                     <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Total</th>
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Status</th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Pagamento
+                    </th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Status
+                    </th>
                     <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Data</th>
-                    <th className="text-right text-xs font-medium text-gray-400 px-4 py-3">Ações</th>
+                    <th className="text-right text-xs font-medium text-gray-400 px-4 py-3">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredPedidos.map((pedido) => {
                     const StatusIcon = statusConfig[pedido.status]?.icon || Clock;
+                    const PagIcon = pagamentoConfig[pedido.pagamentoStatus]?.icon || AlertCircle;
                     return (
-                      <tr key={pedido.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                      <tr
+                        key={pedido.id}
+                        className="border-b border-gray-800/50 hover:bg-gray-800/30"
+                      >
                         <td className="px-4 py-3">
-                          <span className="font-medium text-white">#{pedido.id.slice(0, 8)}</span>
+                          <span className="font-medium text-white">#{pedido.codigo}</span>
                         </td>
                         <td className="px-4 py-3">
                           <div>
-                            <p className="text-white">{pedido.cliente.nome}</p>
-                            <p className="text-xs text-gray-500">{pedido.cliente.email}</p>
+                            <p className="text-white">{pedido.cliente?.nome || "—"}</p>
+                            <p className="text-xs text-gray-500">{pedido.cliente?.email || "—"}</p>
                           </div>
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-white font-medium">
                             R$ {pedido.total.toFixed(2).replace(".", ",")}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
+                              pagamentoConfig[pedido.pagamentoStatus]?.color ||
+                              "bg-gray-500/20 text-gray-400"
+                            }`}
+                          >
+                            <PagIcon className="h-3 w-3" />
+                            {pagamentoConfig[pedido.pagamentoStatus]?.label ||
+                              pedido.pagamentoStatus}
                           </span>
                         </td>
                         <td className="px-4 py-3">
@@ -127,7 +191,7 @@ export default function AdminPedidos() {
                         <td className="px-4 py-3 text-gray-400">
                           {new Date(pedido.createdAt).toLocaleDateString("pt-BR")}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3 text-right">
                           <button
                             onClick={() => setSelectedOrder(pedido.id)}
                             className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg"
@@ -150,28 +214,74 @@ export default function AdminPedidos() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
           <div className="glass-card-dark p-6 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-white">Pedido #{selectedPedido.id.slice(0, 8)}</h3>
-              <button onClick={() => setSelectedOrder(null)} className="p-1 text-gray-400 hover:text-white">
+              <h3 className="text-xl font-bold text-white">Pedido #{selectedPedido.codigo}</h3>
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="p-1 text-gray-400 hover:text-white"
+              >
                 <XCircle className="h-5 w-5" />
               </button>
             </div>
             <div className="space-y-4">
-              <div>
-                <p className="text-sm text-gray-400">Status</p>
-                <span
-                  className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-sm font-medium ${
-                    statusConfig[selectedPedido.status]?.color || "bg-gray-500/20 text-gray-400"
-                  }`}
-                >
-                  {statusConfig[selectedPedido.status]?.label || selectedPedido.status}
-                </span>
+              <div className="flex gap-2">
+                <div>
+                  <p className="text-sm text-gray-400">Status</p>
+                  <select
+                    value={selectedPedido.status}
+                    onChange={(e) => handleStatusChange(selectedPedido.id, e.target.value)}
+                    className="mt-1 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm"
+                  >
+                    {statusOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">Pagamento</p>
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-sm font-medium mt-1 ${
+                      pagamentoConfig[selectedPedido.pagamentoStatus]?.color ||
+                      "bg-gray-500/20 text-gray-400"
+                    }`}
+                  >
+                    {pagamentoConfig[selectedPedido.pagamentoStatus]?.label ||
+                      selectedPedido.pagamentoStatus}
+                  </span>
+                </div>
               </div>
+
+              {selectedPedido.pagamentoId && (
+                <div>
+                  <p className="text-sm text-gray-400">ID Pagamento MP</p>
+                  <p className="text-white text-sm">{selectedPedido.pagamentoId}</p>
+                </div>
+              )}
+
               <div>
                 <p className="text-sm text-gray-400">Cliente</p>
-                <p className="text-white">{selectedPedido.cliente.nome}</p>
-                <p className="text-sm text-gray-400">{selectedPedido.cliente.email}</p>
-                <p className="text-sm text-gray-400">{selectedPedido.cliente.telefone}</p>
+                <p className="text-white">{selectedPedido.cliente?.nome || "—"}</p>
+                <p className="text-sm text-gray-400">{selectedPedido.cliente?.email || "—"}</p>
+                <p className="text-sm text-gray-400">{selectedPedido.cliente?.telefone || "—"}</p>
               </div>
+
+              {selectedPedido.endereco && (
+                <div>
+                  <p className="text-sm text-gray-400">Endereço</p>
+                  <p className="text-white text-sm">
+                    {selectedPedido.endereco.endereco}, {selectedPedido.endereco.numero}
+                    {selectedPedido.endereco.complemento &&
+                      ` - ${selectedPedido.endereco.complemento}`}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    {selectedPedido.endereco.bairro}, {selectedPedido.endereco.cidade} -{" "}
+                    {selectedPedido.endereco.estado}
+                  </p>
+                  <p className="text-sm text-gray-400">CEP: {selectedPedido.endereco.CEP}</p>
+                </div>
+              )}
+
               <div>
                 <p className="text-sm text-gray-400">Produtos</p>
                 <div className="mt-2 space-y-2">
@@ -188,6 +298,7 @@ export default function AdminPedidos() {
                   ))}
                 </div>
               </div>
+
               <div className="border-t border-gray-800 pt-4">
                 <div className="flex justify-between">
                   <p className="text-gray-400">Total</p>

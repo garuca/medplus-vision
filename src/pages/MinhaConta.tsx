@@ -20,7 +20,10 @@ export default function MinhaConta() {
             </div>
           </div>
 
-          <div className="glass-card p-6 cursor-pointer hover:bg-primary/5 transition-colors">
+          <Link
+            to="/meus-pedidos"
+            className="glass-card p-6 cursor-pointer hover:bg-primary/5 transition-colors block"
+          >
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15">
                 <Package className="h-6 w-6 text-primary" />
@@ -31,7 +34,7 @@ export default function MinhaConta() {
               </div>
               <ChevronRight className="ml-auto h-5 w-5 text-muted-foreground" />
             </div>
-          </div>
+          </Link>
 
           <div className="glass-card p-6 cursor-pointer hover:bg-primary/5 transition-colors">
             <div className="flex items-center gap-4">

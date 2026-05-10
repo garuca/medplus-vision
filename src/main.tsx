@@ -11,6 +11,8 @@ import Loja from "./pages/Loja";
 import Produto from "./pages/Produto";
 import Carrinho from "./pages/Carrinho";
 import Checkout from "./pages/Checkout";
+import MeusPedidos from "./pages/MeusPedidos";
+import Success from "./pages/Success";
 import MinhaConta from "./pages/MinhaConta";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
@@ -58,6 +60,8 @@ function MainRoutes() {
       <Route path="/produto/:id" component={Produto} />
       <Route path="/carrinho" component={Carrinho} />
       <Route path="/checkout" component={Checkout} />
+      <Route path="/success" component={Success} />
+      <Route path="/meus-pedidos" component={MeusPedidos} />
       <Route path="/minha-conta" component={MinhaConta} />
       <Route path="/login" component={Login} />
       <Route path="/cadastro" component={Cadastro} />

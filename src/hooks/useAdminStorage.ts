@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import { carregarPedidosAdmin, atualizarStatusPedido } from "../lib/pedidos";
 import type { Produto, Categoria, Pedido, Configuracoes } from "../types/admin";
 
 const STORAGE_KEYS = {
@@ -119,6 +120,10 @@ export function useAdminStorage() {
       if (configData?.dados) {
         setConfig(configData.dados);
       }
+
+      // Load pedidos
+      const pedidosData = await carregarPedidosAdmin();
+      setPedidos(pedidosData);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     } finally {
@@ -244,7 +249,11 @@ export function useAdminStorage() {
   };
 
   const saveProdutos = async (data: Produto[]) => {
-    // For bulk operations
+    await loadData();
+  };
+
+  const updatePedidoStatus = async (id: string, status: Pedido["status"]) => {
+    await atualizarStatusPedido(id, status);
     await loadData();
   };
 
@@ -262,6 +271,7 @@ export function useAdminStorage() {
     deleteCategoria,
     saveConfig,
     saveProdutos,
+    updatePedidoStatus,
     refresh: loadData,
   };
 }

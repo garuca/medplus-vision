@@ -1,5 +1,5 @@
-import { Link } from "wouter";
-import { useState, useCallback } from "react";
+import { Link, useLocation } from "wouter";
+import { useState, useCallback, useEffect } from "react";
 import {
   Check,
   MapPin,
@@ -13,6 +13,7 @@ import {
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { MercadoPagoCheckout, MercadoPagoBadge } from "../components/MercadoPagoCheckoutPro";
+import { salvarPedido, atualizarPagamentoPedido } from "../lib/pedidos";
 import {
   useCep,
   formatarCpf,
@@ -41,10 +42,13 @@ interface DadosCliente {
 export default function Checkout() {
   const { itens, subtotal, limparCarrinho } = useCart();
   const { user, signIn } = useAuth();
+  const [, setLocation] = useLocation();
   const [passo, setPasso] = useState(1);
   const [pedidoConcluido, setPedidoConcluido] = useState(false);
   const [codigoPedido, setCodigoPedido] = useState("");
   const [mpPaymentId, setMpPaymentId] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [savingOrder, setSavingOrder] = useState(false);
   const [docValido, setDocValido] = useState<boolean | null>(null);
   const { buscarCep, loading: loadingCep } = useCep();
   const [loginEmail, setLoginEmail] = useState("");
@@ -107,7 +111,7 @@ export default function Checkout() {
     setDocValido(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (dados.pagamento === "mercadopago") {
       return;
@@ -116,10 +120,44 @@ export default function Checkout() {
       setPasso(passo + 1);
       return;
     }
-    const codigo = "MED" + Date.now().toString().slice(-8);
-    setCodigoPedido(codigo);
-    setPedidoConcluido(true);
-    limparCarrinho();
+    try {
+      setSavingOrder(true);
+      const pedido = await salvarPedido({
+        user_id: user?.id,
+        cliente: {
+          nome: dados.nome,
+          email: dados.email,
+          telefone: dados.telefone,
+          documento: dados.documento,
+          tipoPessoa: dados.tipoPessoa,
+        },
+        endereco: {
+          CEP: dados.CEP,
+          endereco: dados.endereco,
+          numero: dados.numero,
+          complemento: dados.complemento,
+          bairro: dados.bairro,
+          cidade: dados.cidade,
+          estado: dados.estado,
+        },
+        produtos: itens.map((item) => ({
+          produtoId: item.produto.id,
+          nome: item.produto.nome,
+          quantidade: item.quantidade,
+          preco: item.produto.precoPromocional || item.produto.preco,
+        })),
+        total: subtotal,
+        formaPagamento: "whatsapp",
+        pagamentoStatus: "aguardando",
+      });
+      setCodigoPedido(pedido.codigo);
+      setPedidoConcluido(true);
+      limparCarrinho();
+    } catch (err) {
+      console.error("Erro ao salvar pedido:", err);
+    } finally {
+      setSavingOrder(false);
+    }
   };
 
   const handleWhatsApp = () => {
@@ -132,12 +170,52 @@ export default function Checkout() {
     );
   };
 
-  const handleMpSuccess = (paymentId: string) => {
+  // Salva o pedido quando o usuário escolhe Mercado Pago
+  useEffect(() => {
+    if (dados.pagamento === "mercadopago" && passo === 3 && !orderId && itens.length > 0) {
+      salvarPedido({
+        user_id: user?.id,
+        cliente: {
+          nome: dados.nome,
+          email: dados.email,
+          telefone: dados.telefone,
+          documento: dados.documento,
+          tipoPessoa: dados.tipoPessoa,
+        },
+        endereco: {
+          CEP: dados.CEP,
+          endereco: dados.endereco,
+          numero: dados.numero,
+          complemento: dados.complemento,
+          bairro: dados.bairro,
+          cidade: dados.cidade,
+          estado: dados.estado,
+        },
+        produtos: itens.map((item) => ({
+          produtoId: item.produto.id,
+          nome: item.produto.nome,
+          quantidade: item.quantidade,
+          preco: item.produto.precoPromocional || item.produto.preco,
+        })),
+        total: subtotal,
+        formaPagamento: "mercadopago",
+        pagamentoStatus: "pendente",
+      })
+        .then((pedido) => {
+          setOrderId(pedido.id);
+          setCodigoPedido(pedido.codigo);
+        })
+        .catch((err) => console.error("Erro ao salvar pedido:", err));
+    }
+  }, [dados.pagamento, passo, orderId, itens, subtotal, user]);
+
+  const handleMpSuccess = async (paymentId: string) => {
     setMpPaymentId(paymentId);
-    const codigo = "MED" + Date.now().toString().slice(-8);
-    setCodigoPedido(codigo);
-    setPedidoConcluido(true);
+    if (orderId) {
+      await atualizarPagamentoPedido(orderId, "aprovado", paymentId);
+    }
     limparCarrinho();
+    setLocation(`/success?order=${orderId}`);
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
@@ -170,13 +248,21 @@ export default function Checkout() {
           <p className="mt-4 text-sm text-muted-foreground">
             Um e-mail de confirmação foi enviado para {dados.email}
           </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <button
-              onClick={handleWhatsApp}
-              className="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold"
+          <div className="mt-6 flex justify-center gap-3 flex-wrap">
+            {dados.pagamento !== "mercadopago" && (
+              <button
+                onClick={handleWhatsApp}
+                className="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold"
+              >
+                <MessageCircle className="h-5 w-5" /> Enviar por WhatsApp
+              </button>
+            )}
+            <Link
+              to="/meus-pedidos"
+              className="btn-glass inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold"
             >
-              <MessageCircle className="h-5 w-5" /> Enviar por WhatsApp
-            </button>
+              Ver Meus Pedidos
+            </Link>
             <Link
               to="/loja"
               className="btn-glass inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold"
@@ -548,6 +634,7 @@ export default function Checkout() {
                               amount={subtotal}
                               items={itens}
                               customerEmail={dados.email}
+                              orderId={orderId}
                             />
                           </div>
                         )}
