@@ -46,7 +46,15 @@ function loadCartFromStorage(): ItemCarrinho[] {
   try {
     const saved = localStorage.getItem(CART_STORAGE_KEY);
     if (saved) {
-      return JSON.parse(saved);
+      const items: ItemCarrinho[] = JSON.parse(saved);
+      return items.map((item) => ({
+        ...item,
+        produto: {
+          ...item.produto,
+          dimensoes: item.produto.dimensoes || { altura: 0, largura: 0, comprimento: 0 },
+          peso: item.produto.peso || 0,
+        },
+      }));
     }
   } catch (e) {
     console.error("Erro ao carregar carrinho do localStorage:", e);

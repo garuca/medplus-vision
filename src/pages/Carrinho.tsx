@@ -39,7 +39,14 @@ export default function Carrinho() {
 
   const handleCalcularFrete = async () => {
     const cep = cepFrete.replace(/\D/g, "");
-    if (cep.length < 8 || !config.frete.tokenMelhorEnvio) return;
+    if (cep.length < 8 || !config.frete?.tokenMelhorEnvio) {
+      console.warn(
+        "Frete: CEP invalido ou token ausente",
+        cep.length,
+        !!config.frete?.tokenMelhorEnvio,
+      );
+      return;
+    }
     setCalculandoFrete(true);
     setErroFrete("");
     const products = itens.map((item) => {
@@ -54,12 +61,14 @@ export default function Carrinho() {
         insurance_value: item.produto.precoPromocional || item.produto.preco,
       };
     });
+    console.log("Frete: calculando para", cep, products.length, "produtos");
     const result = await calcularFrete(
       cep,
       config.frete.cepOrigem,
       products,
       config.frete.tokenMelhorEnvio,
     );
+    console.log("Frete: resultado", result);
     setOpcoesFrete(result.opcoes);
     setErroFrete(result.erro || "");
     setFreteSelecionado(null);

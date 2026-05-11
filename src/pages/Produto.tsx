@@ -48,7 +48,8 @@ export default function Produto() {
   };
 
   const calcularFreteProduto = async () => {
-    if (!produto || cepFrete.replace(/\D/g, "").length < 8) return;
+    if (!produto || cepFrete.replace(/\D/g, "").length < 8 || !config.frete?.tokenMelhorEnvio)
+      return;
     setCalculandoFrete(true);
     setErroFrete("");
     const dim = produto.dimensoes || { altura: 0, largura: 0, comprimento: 0 };
