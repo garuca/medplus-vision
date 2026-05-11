@@ -15,5 +15,12 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    proxy: {
+      "/proxy-melhor-envio": {
+        target: "https://melhorenvio.com.br",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/proxy-melhor-envio/, ""),
+      },
+    },
   },
 });

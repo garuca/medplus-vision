@@ -14,6 +14,7 @@ import {
 import { placeholderImages } from "../lib/images";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useCategorias } from "../hooks/useCategorias";
 import { LoginModal } from "./LoginModal";
 import { supabase } from "../lib/supabase";
 
@@ -33,22 +34,8 @@ const links = [
   { to: "/contato", label: "Contato" },
 ] as const;
 
-const categorias = [
-  { slug: "urgencia-emergencia", nome: "Urgência e Emergência" },
-  { slug: "sinais-vitais", nome: "Sinais Vitais" },
-  { slug: "diagnostico", nome: "Diagnóstico" },
-  { slug: "instrumentais-cirurgicos", nome: "Instrumentais Cirúrgicos" },
-  { slug: "especialidades", nome: "Especialidades" },
-  { slug: "area-do-academico", nome: "Área do Acadêmico" },
-  { slug: "hospiluvas", nome: "HOSPILUVAS" },
-  { slug: "hospi-kids", nome: "HOSPI KIDS" },
-  { slug: "hospivet", nome: "HOSPIVET" },
-  { slug: "cardiorespiratorio", nome: "Cardiorespiratório" },
-  { slug: "limpeza-hospitalar", nome: "Limpeza Hospitalar" },
-  { slug: "ortopedia-reabilitacao", nome: "Ortopedia e Reabilitação" },
-];
-
 export function Header() {
+  const { categorias } = useCategorias();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [search, setSearch] = useState("");
@@ -133,7 +120,7 @@ export function Header() {
               <span>(62) 3519-9974</span>
             </a>
             <a
-              href="https://api.whatsapp.com/send/?phone=556294896602"
+              href="https://api.whatsapp.com/send/?phone=5562994896602"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 hover:text-cyan-100 transition"

@@ -77,7 +77,7 @@ const clientLogos = Array.from({ length: 16 }, (_, i) => ({
 
 const banners = {
   hero: {
-    titulo: "Excelência em suprimentos médicos para profissionais e instituições",
+    titulo: "Excelência em suprimentos médicos para profissionais e instituições de Saúde",
     subtitulo: "Parceria confiável com qualidade comprovada",
     descricao: "Desde 2009 fornecendo equipamentos médicos de qualidade",
     botao: "CONHECER CATÁLOGO",

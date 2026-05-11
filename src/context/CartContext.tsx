@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import type { FreteOpcao } from "../lib/frete";
 
 export interface Produto {
   id: string;
@@ -14,6 +15,8 @@ export interface Produto {
   sku?: string;
   estoque: number;
   especificacoes?: Record<string, string>;
+  dimensoes?: { altura: number; largura: number; comprimento: number };
+  peso?: number;
 }
 
 export interface ItemCarrinho {
@@ -29,6 +32,10 @@ interface CartContextType {
   limparCarrinho: () => void;
   totaleItens: number;
   subtotal: number;
+  freteSelecionado: FreteOpcao | null;
+  setFreteSelecionado: (frete: FreteOpcao | null) => void;
+  opcoesFrete: FreteOpcao[];
+  setOpcoesFrete: (opcoes: FreteOpcao[]) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -90,7 +97,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const limparCarrinho = () => setItens([]);
+  const limparCarrinho = () => {
+    setItens([]);
+    setFreteSelecionado(null);
+    setOpcoesFrete([]);
+  };
+
+  const [freteSelecionado, setFreteSelecionado] = useState<FreteOpcao | null>(null);
+  const [opcoesFrete, setOpcoesFrete] = useState<FreteOpcao[]>([]);
 
   const totaleItens = itens.reduce((acc, item) => acc + item.quantidade, 0);
   const subtotal = itens.reduce(
@@ -108,6 +122,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         limparCarrinho,
         totaleItens,
         subtotal,
+        freteSelecionado,
+        setFreteSelecionado,
+        opcoesFrete,
+        setOpcoesFrete,
       }}
     >
       {children}

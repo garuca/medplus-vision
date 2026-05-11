@@ -9,6 +9,7 @@ export async function salvarPedido(data: {
   total: number;
   formaPagamento: Pedido["formaPagamento"];
   pagamentoStatus?: Pedido["pagamentoStatus"];
+  frete?: Pedido["frete"];
 }): Promise<Pedido> {
   const codigo = "MED" + Date.now().toString().slice(-8);
 
@@ -21,6 +22,7 @@ export async function salvarPedido(data: {
       endereco: data.endereco,
       produtos: data.produtos,
       total: data.total,
+      frete: data.frete || null,
       forma_pagamento: data.formaPagamento,
       pagamento_status: data.pagamentoStatus || "aguardando",
       status: "pendente",
@@ -42,6 +44,7 @@ export async function salvarPedido(data: {
     formaPagamento: pedido.forma_pagamento,
     pagamentoStatus: pedido.pagamento_status,
     pagamentoId: pedido.pagamento_id,
+    frete: pedido.frete as Pedido["frete"] | undefined,
     createdAt: pedido.created_at,
   };
 }
@@ -108,6 +111,7 @@ function formatarPedido(p: Record<string, unknown>): Pedido {
     formaPagamento: p.forma_pagamento as Pedido["formaPagamento"],
     pagamentoStatus: p.pagamento_status as Pedido["pagamentoStatus"],
     pagamentoId: p.pagamento_id as string | undefined,
+    frete: p.frete as Pedido["frete"] | undefined,
     createdAt: p.created_at as string,
   };
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Mail, Lock, User, Loader2, FileText } from "lucide-react";
+import { X, Mail, Lock, User, Loader2, FileText, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const formatCpfCnpj = (value: string) => {
@@ -53,6 +53,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [nome, setNome] = useState("");
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [loading, setLoading] = useState(false);
@@ -165,13 +166,20 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <input
-              type="password"
+              type={mostrarSenha ? "text" : "password"}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Sua senha"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+              className="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
             />
+            <button
+              type="button"
+              onClick={() => setMostrarSenha(!mostrarSenha)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              {mostrarSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}

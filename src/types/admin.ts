@@ -62,6 +62,11 @@ export interface Pedido {
   formaPagamento: "whatsapp" | "mercadopago";
   pagamentoStatus: "pendente" | "aprovado" | "recusado" | "cancelado" | "aguardando";
   pagamentoId?: string;
+  frete?: {
+    servico: string;
+    preco: number;
+    prazo: number;
+  };
   createdAt: string;
 }
 
@@ -82,5 +87,9 @@ export interface Configuracoes {
   envios: {
     emailNotificacoes: string;
     notifyNewOrder: boolean;
+  };
+  frete: {
+    cepOrigem: string;
+    tokenMelhorEnvio: string;
   };
 }

@@ -1,5 +1,5 @@
 import { Link, useRoute } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Minus,
@@ -13,29 +13,66 @@ import {
   CreditCard,
   Lock,
   Loader2,
+  Search,
+  Package,
+  Clock,
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useProdutoById } from "../hooks/useProdutos";
-import { useDataSource } from "../hooks/useDataSource";
+import { useAdminStorage } from "../hooks/useAdminStorage";
+import { calcularFrete, formatarFrete } from "../lib/frete";
+import type { FreteOpcao } from "../lib/frete";
 
 export default function Produto() {
   const [match, params] = useRoute("/produto/:id");
   const [quantidade, setQuantidade] = useState(1);
   const [imagemSelecionada, setImagemSelecionada] = useState(0);
+  const [cepFrete, setCepFrete] = useState("");
+  const [opcoesFrete, setOpcoesFrete] = useState<FreteOpcao[]>([]);
+  const [calculandoFrete, setCalculandoFrete] = useState(false);
   const { adicionarProduto } = useCart();
 
   const productId = params?.id || "";
   const { produto, loading, error } = useProdutoById(productId);
+  const { config } = useAdminStorage();
 
   const handleWhatsApp = () => {
     if (!produto?.nome) return;
     const preco = produto.precoPromocional || produto.preco || 0;
     const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${preco.toFixed(2)}`;
     window.open(
-      `https://api.whatsapp.com/send/?phone=556294896602?text=${encodeURIComponent(msg)}`,
+      `https://api.whatsapp.com/send/?phone=5562994896602?text=${encodeURIComponent(msg)}`,
       "_blank",
     );
   };
+
+  const calcularFreteProduto = async () => {
+    if (!produto || cepFrete.replace(/\D/g, "").length < 8) return;
+    setCalculandoFrete(true);
+    const dim = produto.dimensoes || { altura: 0, largura: 0, comprimento: 0 };
+    const results = await calcularFrete(
+      cepFrete,
+      config.frete.cepOrigem,
+      [
+        {
+          id: produto.id,
+          width: dim.largura || 10,
+          height: dim.altura || 10,
+          length: dim.comprimento || 10,
+          weight: produto.peso || 0.3,
+          quantity: quantidade,
+          insurance_value: produto.precoPromocional || produto.preco,
+        },
+      ],
+      config.frete.tokenMelhorEnvio,
+    );
+    setOpcoesFrete(results);
+    setCalculandoFrete(false);
+  };
+
+  useEffect(() => {
+    if (opcoesFrete.length > 0) calcularFreteProduto();
+  }, [quantidade]);
 
   const todasImagens =
     produto?.imagemPrincipal || produto?.imagem
@@ -80,12 +117,6 @@ export default function Produto() {
 
           {/* Benefícios - Versão Compacta */}
           <div className="mb-6 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Truck className="h-3 w-3" /> Frete Grátis R$ 499,90+
-            </span>
-            <span className="flex items-center gap-1">
-              <CreditCard className="h-3 w-3" /> 15% desconto à vista
-            </span>
             <span className="flex items-center gap-1">
               <Lock className="h-3 w-3" /> Compra segura
             </span>
@@ -147,22 +178,6 @@ export default function Produto() {
                 </p>
               )}
 
-              <div className="mt-4">
-                <p className="text-sm text-muted-foreground">
-                  em até{" "}
-                  <span className="font-semibold text-foreground">
-                    {Math.ceil((produto.precoPromocional || produto.preco) / 2)}x
-                  </span>{" "}
-                  de R${" "}
-                  {((produto.precoPromocional || produto.preco) / 2).toFixed(2).replace(".", ",")}{" "}
-                  sem juros
-                </p>
-                <p className="text-sm text-green-600">
-                  ou R$ {(produto.precoPromocional || produto.preco).toFixed(2).replace(".", ",")} à
-                  vista
-                </p>
-              </div>
-
               <div className="mt-6 flex items-center gap-4">
                 <div className="flex items-center gap-3">
                   <button
@@ -203,7 +218,7 @@ export default function Produto() {
                       const msg = encodeURIComponent(
                         `Olá, gostaria de consultar sobre a disponibilidade de ${quantidade} unidades do produto: ${produto.nome}`,
                       );
-                      window.open(`https://wa.me/5511999999999?text=${msg}`, "_blank");
+                      window.open(`https://wa.me/5562994896602?text=${msg}`, "_blank");
                     }}
                     className="mt-2 text-sm font-medium text-primary hover:underline"
                   >
@@ -230,6 +245,8 @@ export default function Produto() {
                       sku: produto.sku || "",
                       estoque: produto.estoque || 0,
                       especificacoes: produto.especificacoes || {},
+                      dimensoes: produto.dimensoes,
+                      peso: produto.peso,
                     };
                     adicionarProduto(produtoParaCarrinho, quantidade);
                   }}
@@ -252,13 +269,63 @@ export default function Produto() {
                 <MessageCircle className="h-5 w-5" /> Comprar pelo WhatsApp
               </button>
 
-              {/* Comprar pelo WhatsApp */}
-              <button
-                onClick={handleWhatsApp}
-                className="mt-3 w-full btn-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold"
-              >
-                <MessageCircle className="h-5 w-5" /> Comprar pelo WhatsApp
-              </button>
+              {/* Calcular Frete */}
+              <div className="mt-6 glass-card p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Truck className="h-4 w-4 text-primary" /> Calcular Frete
+                </h3>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={cepFrete}
+                    onChange={(e) => setCepFrete(e.target.value.replace(/\D/g, "").slice(0, 8))}
+                    placeholder="Digite seu CEP"
+                    maxLength={8}
+                    className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary/50 outline-none"
+                  />
+                  <button
+                    onClick={calcularFreteProduto}
+                    disabled={calculandoFrete || cepFrete.replace(/\D/g, "").length < 8}
+                    className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 flex items-center gap-1"
+                  >
+                    {calculandoFrete ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Search className="h-4 w-4" /> Calcular
+                      </>
+                    )}
+                  </button>
+                </div>
+                {opcoesFrete.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {opcoesFrete.map((opcao, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Package className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">{opcao.servico}</p>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Clock className="h-3 w-3" /> {opcao.prazo} dias úteis
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-sm font-bold text-primary">
+                          {formatarFrete(opcao.preco)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {!config.frete?.tokenMelhorEnvio && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Configure o token Melhor Envio no admin para calcular fretes reais
+                  </p>
+                )}
+              </div>
 
               {/* Descrição - Above fold */}
               <div className="mt-6">

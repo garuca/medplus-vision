@@ -1,5 +1,17 @@
 import { useState } from "react";
-import { Settings, Save, Phone, Mail, MapPin, Instagram, Facebook, Linkedin, AlertCircle, CheckCircle } from "lucide-react";
+import {
+  Settings,
+  Save,
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Facebook,
+  Linkedin,
+  AlertCircle,
+  CheckCircle,
+  Truck,
+} from "lucide-react";
 import { AdminLayout } from "../../components/AdminLayout";
 import { useAdminStorage } from "../../hooks/useAdminStorage";
 
@@ -37,7 +49,11 @@ export default function AdminConfig() {
             <h1 className="text-2xl font-bold text-white">Configurações</h1>
             <p className="text-gray-400">Gerencie as configurações do site</p>
           </div>
-          <button onClick={handleSave} disabled={saving} className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2"
+          >
             <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar"}
           </button>
         </div>
@@ -57,11 +73,15 @@ export default function AdminConfig() {
           </div>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Nome da Empresa</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                Nome da Empresa
+              </label>
               <input
                 type="text"
                 value={form.empresa.nome}
-                onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, nome: e.target.value } })}
+                onChange={(e) =>
+                  setForm({ ...form, empresa: { ...form.empresa, nome: e.target.value } })
+                }
                 className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               />
             </div>
@@ -73,7 +93,9 @@ export default function AdminConfig() {
                   <input
                     type="text"
                     value={form.empresa.telefone}
-                    onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, telefone: e.target.value } })}
+                    onChange={(e) =>
+                      setForm({ ...form, empresa: { ...form.empresa, telefone: e.target.value } })
+                    }
                     className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
@@ -83,7 +105,9 @@ export default function AdminConfig() {
                 <input
                   type="text"
                   value={form.empresa.whatsapp}
-                  onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, whatsapp: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({ ...form, empresa: { ...form.empresa, whatsapp: e.target.value } })
+                  }
                   placeholder="556299981212"
                   className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
@@ -96,7 +120,9 @@ export default function AdminConfig() {
                 <input
                   type="email"
                   value={form.empresa.email}
-                  onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, email: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({ ...form, empresa: { ...form.empresa, email: e.target.value } })
+                  }
                   className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
@@ -106,7 +132,9 @@ export default function AdminConfig() {
               <input
                 type="text"
                 value={form.empresa.cnpj}
-                onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, cnpj: e.target.value } })}
+                onChange={(e) =>
+                  setForm({ ...form, empresa: { ...form.empresa, cnpj: e.target.value } })
+                }
                 className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               />
             </div>
@@ -116,7 +144,9 @@ export default function AdminConfig() {
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-500" />
                 <textarea
                   value={form.empresa.endereco}
-                  onChange={(e) => setForm({ ...form, empresa: { ...form.empresa, endereco: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({ ...form, empresa: { ...form.empresa, endereco: e.target.value } })
+                  }
                   rows={2}
                   className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                 />
@@ -139,7 +169,12 @@ export default function AdminConfig() {
                 <input
                   type="text"
                   value={form.redesSociais.instagram || ""}
-                  onChange={(e) => setForm({ ...form, redesSociais: { ...form.redesSociais, instagram: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      redesSociais: { ...form.redesSociais, instagram: e.target.value },
+                    })
+                  }
                   placeholder="@usuario"
                   className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
@@ -152,7 +187,12 @@ export default function AdminConfig() {
                 <input
                   type="text"
                   value={form.redesSociais.facebook || ""}
-                  onChange={(e) => setForm({ ...form, redesSociais: { ...form.redesSociais, facebook: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      redesSociais: { ...form.redesSociais, facebook: e.target.value },
+                    })
+                  }
                   placeholder="facebook.com/usuario"
                   className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
@@ -165,11 +205,58 @@ export default function AdminConfig() {
                 <input
                   type="text"
                   value={form.redesSociais.linkedin || ""}
-                  onChange={(e) => setForm({ ...form, redesSociais: { ...form.redesSociais, linkedin: e.target.value } })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      redesSociais: { ...form.redesSociais, linkedin: e.target.value },
+                    })
+                  }
                   placeholder="linkedin.com/in/usuario"
                   className="w-full pl-10 pr-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Frete */}
+        <div className="glass-card-dark p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Truck className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-semibold text-white">Frete</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                CEP de Origem
+              </label>
+              <input
+                type="text"
+                value={form.frete.cepOrigem}
+                onChange={(e) =>
+                  setForm({ ...form, frete: { ...form.frete, cepOrigem: e.target.value } })
+                }
+                placeholder="74917196"
+                className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              />
+              <p className="text-xs text-gray-500 mt-1">CEP da sua loja para cálculo de frete</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                Token Melhor Envio
+              </label>
+              <input
+                type="text"
+                value={form.frete.tokenMelhorEnvio}
+                onChange={(e) =>
+                  setForm({ ...form, frete: { ...form.frete, tokenMelhorEnvio: e.target.value } })
+                }
+                placeholder="Seu token de acesso"
+                className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Token da API Melhor Envio para calcular fretes em tempo real
+              </p>
             </div>
           </div>
         </div>
@@ -182,11 +269,18 @@ export default function AdminConfig() {
           </div>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-mail para notificações</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                E-mail para notificações
+              </label>
               <input
                 type="email"
                 value={form.envios.emailNotificacoes}
-                onChange={(e) => setForm({ ...form, envios: { ...form.envios, emailNotificacoes: e.target.value } })}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    envios: { ...form.envios, emailNotificacoes: e.target.value },
+                  })
+                }
                 className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               />
             </div>
@@ -197,10 +291,17 @@ export default function AdminConfig() {
               </div>
               <button
                 type="button"
-                onClick={() => setForm({ ...form, envios: { ...form.envios, notifyNewOrder: !form.envios.notifyNewOrder } })}
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    envios: { ...form.envios, notifyNewOrder: !form.envios.notifyNewOrder },
+                  })
+                }
                 className={`w-12 h-6 rounded-full transition-colors ${form.envios.notifyNewOrder ? "bg-green-500" : "bg-gray-700"}`}
               >
-                <span className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.envios.notifyNewOrder ? "translate-x-6" : "translate-x-0"}`} />
+                <span
+                  className={`block h-6 w-6 rounded-full bg-white shadow transform transition-transform ${form.envios.notifyNewOrder ? "translate-x-6" : "translate-x-0"}`}
+                />
               </button>
             </div>
           </div>

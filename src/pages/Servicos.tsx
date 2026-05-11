@@ -263,7 +263,7 @@ export default function Servicos() {
               <Phone className="h-5 w-5" /> Falar com especialista
             </Link>
             <a
-              href="https://api.whatsapp.com/send/?phone=556294896602"
+              href="https://api.whatsapp.com/send/?phone=5562994896602"
               target="_blank"
               className="btn-secondary inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-semibold"
             >

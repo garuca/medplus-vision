@@ -37,7 +37,7 @@ const departments = [
     icon: Stethoscope,
     title: "Vendas",
     email: "juliano@medplushospitalar.com.br",
-    whatsapp: "556294896602",
+    whatsapp: "5562994896602",
     desc: "Equipamentos médicos e hospitalares",
     contato: "Juliano Rodrigues",
   },
@@ -146,7 +146,7 @@ export default function Contato() {
               </div>
             </a>
             <a
-              href={`https://api.whatsapp.com/send/?phone=55556294896602`}
+              href={`https://api.whatsapp.com/send/?phone=5562994896602`}
               target="_blank"
               className="group glass-card flex flex-col items-center gap-4 p-6 text-center hover:scale-[1.02] transition-all duration-300"
             >
@@ -421,7 +421,7 @@ export default function Contato() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="https://wa.me/556294896602"
+              href="https://wa.me/5562994896602"
               target="_blank"
               className="btn-primary inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-semibold"
             >

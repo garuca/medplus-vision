@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { formatarFrete } from "../lib/frete";
 import { MercadoPagoCheckout, MercadoPagoBadge } from "../components/MercadoPagoCheckoutPro";
 import { salvarPedido, atualizarPagamentoPedido } from "../lib/pedidos";
 import {
@@ -40,7 +41,9 @@ interface DadosCliente {
 }
 
 export default function Checkout() {
-  const { itens, subtotal, limparCarrinho } = useCart();
+  const { itens, subtotal, limparCarrinho, freteSelecionado, setFreteSelecionado, opcoesFrete } =
+    useCart();
+  const totalComFrete = freteSelecionado ? subtotal + freteSelecionado.preco : subtotal;
   const { user, signIn } = useAuth();
   const [, setLocation] = useLocation();
   const [passo, setPasso] = useState(1);
@@ -146,7 +149,14 @@ export default function Checkout() {
           quantidade: item.quantidade,
           preco: item.produto.precoPromocional || item.produto.preco,
         })),
-        total: subtotal,
+        total: totalComFrete,
+        frete: freteSelecionado
+          ? {
+              servico: freteSelecionado.servico,
+              preco: freteSelecionado.preco,
+              prazo: freteSelecionado.prazo,
+            }
+          : undefined,
         formaPagamento: "whatsapp",
         pagamentoStatus: "aguardando",
       });
@@ -163,9 +173,12 @@ export default function Checkout() {
   const handleWhatsApp = () => {
     const itensLista = itens.map((i) => `${i.quantidade}x ${i.produto.nome}`).join("\n");
     const docLabel = dados.tipoPessoa === "cpf" ? "CPF" : "CNPJ";
-    const msg = `*NOVO PEDIDO - ${codigoPedido}*\n\n*Itens:*\n${itensLista}\n\n*Total:* R$ ${subtotal.toFixed(2)}\n\n*Cliente:* ${dados.nome}\n${dados.email}\n${dados.telefone}\n${docLabel}: ${dados.documento}\n\n*Endereço:* ${dados.endereco}, ${dados.numero} - ${dados.bairro}, ${dados.cidade}-${dados.estado}`;
+    const freteStr = freteSelecionado
+      ? `\n*Frete:* ${freteSelecionado.servico} - ${formatarFrete(freteSelecionado.preco)} (${freteSelecionado.prazo} dias)`
+      : "";
+    const msg = `*NOVO PEDIDO - ${codigoPedido}*\n\n*Itens:*\n${itensLista}\n\n*Subtotal:* R$ ${subtotal.toFixed(2)}${freteStr}\n*Total:* R$ ${totalComFrete.toFixed(2)}\n\n*Cliente:* ${dados.nome}\n${dados.email}\n${dados.telefone}\n${docLabel}: ${dados.documento}\n\n*Endereço:* ${dados.endereco}, ${dados.numero} - ${dados.bairro}, ${dados.cidade}-${dados.estado}`;
     window.open(
-      `https://api.whatsapp.com/send/?phone=55556294896602&text=${encodeURIComponent(msg)}`,
+      `https://api.whatsapp.com/send/?phone=5562994896602&text=${encodeURIComponent(msg)}`,
       "_blank",
     );
   };
@@ -197,7 +210,14 @@ export default function Checkout() {
           quantidade: item.quantidade,
           preco: item.produto.precoPromocional || item.produto.preco,
         })),
-        total: subtotal,
+        total: totalComFrete,
+        frete: freteSelecionado
+          ? {
+              servico: freteSelecionado.servico,
+              preco: freteSelecionado.preco,
+              prazo: freteSelecionado.prazo,
+            }
+          : undefined,
         formaPagamento: "mercadopago",
         pagamentoStatus: "pendente",
       })
@@ -554,33 +574,43 @@ export default function Checkout() {
             {passo === 2 && (
               <div className="glass-card p-6">
                 <h2 className="text-lg font-bold mb-4">Opções de Entrega</h2>
-                <div className="space-y-3">
-                  <label className="flex items-start gap-3 cursor-pointer p-4 rounded-xl border-2 border-primary bg-primary/5">
-                    <input type="radio" name="entrega" defaultChecked className="mt-1" />
-                    <div>
-                      <p className="font-semibold">PAC</p>
-                      <p className="text-sm text-muted-foreground">5 a 7 dias úteis - R$ 15,00</p>
-                    </div>
-                  </label>
-                  <label className="flex items-start gap-3 cursor-pointer p-4 rounded-xl border border-border">
-                    <input type="radio" name="entrega" className="mt-1" />
-                    <div>
-                      <p className="font-semibold">Sedex</p>
-                      <p className="text-sm text-muted-foreground">1 a 2 dias úteis - R$ 25,00</p>
-                    </div>
-                  </label>
-                  <label className="flex items-start gap-3 cursor-pointer p-4 rounded-xl border border-border">
-                    <input type="radio" name="entrega" className="mt-1" />
-                    <div>
-                      <p className="font-semibold">Retirada na Loja</p>
-                      <p className="text-sm text-muted-foreground">Após confirmação -gratuito</p>
-                      <p className="text-xs text-muted-foreground">
-                        Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia -
-                        GO
-                      </p>
-                    </div>
-                  </label>
-                </div>
+                {opcoesFrete.length > 0 ? (
+                  <div className="space-y-3">
+                    {opcoesFrete.map((opcao, i) => (
+                      <label
+                        key={i}
+                        className={`flex items-center gap-3 cursor-pointer p-4 rounded-xl transition-all ${
+                          freteSelecionado?.servico === opcao.servico
+                            ? "border-2 border-primary bg-primary/5"
+                            : "border border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="frete"
+                          checked={freteSelecionado?.servico === opcao.servico}
+                          onChange={() => setFreteSelecionado(opcao)}
+                          className="mt-0.5 shrink-0"
+                        />
+                        <div className="flex-1 flex items-center justify-between">
+                          <div>
+                            <p className="font-semibold">{opcao.servico}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {opcao.prazo} dias úteis
+                            </p>
+                          </div>
+                          <span className="font-bold text-primary">
+                            {formatarFrete(opcao.preco)}
+                          </span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Nenhum frete disponível. Calcule o frete no carrinho antes de continuar.
+                  </p>
+                )}
               </div>
             )}
 
@@ -631,7 +661,7 @@ export default function Checkout() {
                         {dados.pagamento === "mercadopago" && dados.email && (
                           <div className="mt-4">
                             <MercadoPagoCheckout
-                              amount={subtotal}
+                              amount={totalComFrete}
                               items={itens}
                               customerEmail={dados.email}
                               orderId={orderId}
@@ -668,9 +698,17 @@ export default function Checkout() {
                 ))}
               </div>
               <hr className="my-4" />
+              {freteSelecionado && (
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-muted-foreground">Frete ({freteSelecionado.servico})</span>
+                  <span>{formatarFrete(freteSelecionado.preco)}</span>
+                </div>
+              )}
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-primary">R$ {subtotal.toFixed(2).replace(".", ",")}</span>
+                <span className="text-primary">
+                  R$ {totalComFrete.toFixed(2).replace(".", ",")}
+                </span>
               </div>
               {dados.pagamento !== "mercadopago" && (
                 <button

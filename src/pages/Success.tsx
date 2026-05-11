@@ -23,7 +23,7 @@ export default function Success() {
 
   const handleWhatsApp = () => {
     window.open(
-      `https://api.whatsapp.com/send/?phone=55556294896602&text=${encodeURIComponent(`Olá! Meu pedido ${codigo} foi aprovado pelo Mercado Pago.`)}`,
+      `https://api.whatsapp.com/send/?phone=5562994896602&text=${encodeURIComponent(`Olá! Meu pedido ${codigo} foi aprovado pelo Mercado Pago.`)}`,
       "_blank",
     );
   };

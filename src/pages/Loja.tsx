@@ -106,14 +106,14 @@ export default function Loja() {
               </div>
               <div className="flex items-center gap-2">
                 <Award className="h-5 w-5" />
-                <span className="text-xs">Desde 2012</span>
+                <span className="text-xs">Desde 2009</span>
               </div>
             </div>
             <div className="relative flex h-40 items-center">
               <div>
                 <h2 className="text-3xl font-bold">Nossos Produtos</h2>
                 <p className="text-cyan-100">
-                  Equipamentos médicos de qualidade para profissionais e instituições
+                  Excelência em suprimentos médicos para profissionais e instituições de Saúde
                 </p>
               </div>
             </div>

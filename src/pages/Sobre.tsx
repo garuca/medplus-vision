@@ -54,7 +54,7 @@ const timeline = [
     text: "Juliano Rodrigues e Lucas iniciam no setor de equipamentos médicos.",
   },
   {
-    year: "2012",
+    year: "2009",
     title: "Especialização",
     text: "Foco em suprimentos médicos para hospitais e clínicas.",
   },

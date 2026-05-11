@@ -21,7 +21,7 @@ const defaultConfig: Configuracoes = {
     nome: "MedPlus Hospitalar",
     email: "contato@medplushospitalar.com.br",
     telefone: "(62) 3519-9974",
-    whatsapp: "556294896602",
+    whatsapp: "5562994896602",
     endereco:
       "Av. Zoroastro Artiaga, QD 09 LT44 - Cruzeiro do Sul, Aparecida de Goiânia - GO, 74917-196",
     cnpj: "34.075.280/0001-19",
@@ -32,6 +32,11 @@ const defaultConfig: Configuracoes = {
   envios: {
     emailNotificacoes: "contato@medplushospitalar.com.br",
     notifyNewOrder: true,
+  },
+  frete: {
+    cepOrigem: "74917196",
+    tokenMelhorEnvio:
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2QzNGMxMWZlNmU1OTM0NGM0NTgxNTMwNWQ0MmMyNDUzNGQ1MmU1MThhMzdiNzA0MTkyMDI5YjQ4MGUyNzhlOTE5YzBiNWE5N2EzNjliOTMiLCJpYXQiOjE3Nzg1MTUwOTIuOTEwNDk3LCJuYmYiOjE3Nzg1MTUwOTIuOTEwNDk5LCJleHAiOjE4MTAwNTEwOTIuODk4ODQxLCJzdWIiOiJhMWMxM2Q3Ni0yNDBkLTRiMzItODkzNy0wOWEzYzBmMDlmNjYiLCJzY29wZXMiOlsiY2FydC1yZWFkIiwiY2FydC13cml0ZSIsImNvbXBhbmllcy1yZWFkIiwiY29tcGFuaWVzLXdyaXRlIiwiY291cG9ucy1yZWFkIiwiY291cG9ucy13cml0ZSIsIm5vdGlmaWNhdGlvbnMtcmVhZCIsIm9yZGVycy1yZWFkIiwicHJvZHVjdHMtcmVhZCIsInByb2R1Y3RzLWRlc3Ryb3kiLCJwcm9kdWN0cy13cml0ZSIsInB1cmNoYXNlcy1yZWFkIiwic2hpcHBpbmctY2FsY3VsYXRlIiwic2hpcHBpbmctY2FuY2VsIiwic2hpcHBpbmctY2hlY2tvdXQiLCJzaGlwcGluZy1jb21wYW5pZXMiLCJzaGlwcGluZy1nZW5lcmF0ZSIsInNoaXBwaW5nLXByZXZpZXciLCJzaGlwcGluZy1wcmludCIsInNoaXBwaW5nLXNoYXJlIiwic2hpcHBpbmctdHJhY2tpbmciLCJlY29tbWVyY2Utc2hpcHBpbmciLCJ0cmFuc2FjdGlvbnMtcmVhZCIsInVzZXJzLXJlYWQiLCJ1c2Vycy13cml0ZSIsIndlYmhvb2tzLXJlYWQiLCJ3ZWJob29rcy13cml0ZSIsIndlYmhvb2tzLWRlbGV0ZSIsInRkZWFsZXItd2ViaG9vayJdfQ.DzYNvL7an6lXHl_cALAEDpVwfnp1QyrbYKqBJeM68ZySm9bPh6c5TXfyLG0XMU3iw0SAml7sT1iR02EKNw5-WBRa9gqfHNICVP5FtUxV2qCWQH2fyTiBxYhdk7fbmm9WO7ZGMqr3FlKr5TtvoZiq5-Zrkh3CvAVhoyuLHMb6UzkjxJRO9pl-B3Mx6RQwtQlN2u2f8gOdUg6xkKzlFuYDAhm-wKL39791SPrQm8WmXgWCCG7ZoxM2vEYrye8s41SDz2ZTeNtkWnEjjjr2gkqEG6noI7O0oMHc4Ym3O0MneXH0F9_Nt1kI8YKRgpz-9EOicNpkbHwr4CQgjbzHElocS1CL4tb7U02UqtDc0EIeWUbfV0wxhJ7PDL1sB5vMk7ZM4ImUSsTbz4xrtzajGpQbDKGb0CMFIaYCMbWVEQC61PTjoSI48vc73EmE8lbm2izgoKnfpmzi9bIb3CA8Vtd9mYUGlJPc1mAU8jbE233M3GgeTbjnHb7gyQfTqd8tvtE3yjIioYkvQ-o0OJfgORzgyqbJrEOiQJUoPiyreemvW-Pv2ZnphFtEjozHX2Vhxss0fxnUqb2M68vjGscQXVb9xjRWwpFM_iv6uixAH85IgolmKdhNGWAVPWs2LUlE-ItwGqwqvB606OqNopZK4eH4hjWm0LnjmYAOVpmR5dCxMY4",
   },
 };
 
@@ -118,7 +123,14 @@ export function useAdminStorage() {
         .single();
 
       if (configData?.dados) {
-        setConfig(configData.dados);
+        setConfig({
+          ...defaultConfig,
+          ...configData.dados,
+          frete: { ...defaultConfig.frete, ...(configData.dados.frete || {}) },
+          empresa: { ...defaultConfig.empresa, ...(configData.dados.empresa || {}) },
+          redesSociais: { ...defaultConfig.redesSociais, ...(configData.dados.redesSociais || {}) },
+          envios: { ...defaultConfig.envios, ...(configData.dados.envios || {}) },
+        });
       }
 
       // Load pedidos

@@ -1,8 +1,10 @@
 import { Link, useLocation } from "wouter";
-import { LogIn } from "lucide-react";
+import { useState } from "react";
+import { LogIn, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [, setLocation] = useLocation();
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,13 +26,35 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
               <label className="text-sm font-medium">E-mail</label>
-              <input type="email" required className="glass-input mt-1 w-full rounded-xl px-4 py-3" placeholder="seu@email.com" />
+              <input
+                type="email"
+                required
+                className="glass-input mt-1 w-full rounded-xl px-4 py-3"
+                placeholder="seu@email.com"
+              />
             </div>
             <div>
               <label className="text-sm font-medium">Senha</label>
-              <input type="password" required className="glass-input mt-1 w-full rounded-xl px-4 py-3" placeholder="••••••••" />
+              <div className="relative mt-1">
+                <input
+                  type={mostrarSenha ? "text" : "password"}
+                  required
+                  className="glass-input w-full rounded-xl px-4 py-3 pr-10"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {mostrarSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
             </div>
-            <button type="submit" className="w-full btn-primary rounded-full px-6 py-3 font-semibold">
+            <button
+              type="submit"
+              className="w-full btn-primary rounded-full px-6 py-3 font-semibold"
+            >
               Entrar
             </button>
           </form>
