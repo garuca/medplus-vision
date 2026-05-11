@@ -1,5 +1,6 @@
 export const handler = async (event) => {
-  const path = event.queryStringParameters?.path || "";
+  const path =
+    event.queryStringParameters?.path || event.path?.replace(/^\/proxy-melhor-envio\//, "") || "";
   const url = `https://melhorenvio.com.br/${path}`;
 
   const headers = {
