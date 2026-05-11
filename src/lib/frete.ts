@@ -67,7 +67,15 @@ export async function calcularFrete(
       }));
 
     if (opcoes.length === 0) {
-      return { opcoes: [], erro: "Nenhuma transportadora disponível para este CEP" };
+      console.error("Frete API: response without custom_price", JSON.stringify(data));
+      const errors = (data as any[])
+        .filter((item: any) => item.error)
+        .map((item: any) => `${item.name}: ${item.error}`)
+        .join(" | ");
+      return {
+        opcoes: [],
+        erro: errors || "Nenhuma transportadora disponível para este CEP",
+      };
     }
 
     return { opcoes };
