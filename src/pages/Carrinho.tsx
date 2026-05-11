@@ -61,7 +61,12 @@ export default function Carrinho() {
         insurance_value: item.produto.precoPromocional || item.produto.preco,
       };
     });
-    console.log("Frete: calculando para", cep, products.length, "produtos");
+    const body = {
+      from: { postal_code: config.frete.cepOrigem.replace(/\D/g, "") },
+      to: { postal_code: cep },
+      products,
+    };
+    console.log("Frete: enviando para API", JSON.stringify(body, null, 2));
     const result = await calcularFrete(
       cep,
       config.frete.cepOrigem,
