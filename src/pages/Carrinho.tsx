@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Minus,
   Plus,
@@ -36,6 +36,11 @@ export default function Carrinho() {
   const [calculandoFrete, setCalculandoFrete] = useState(false);
   const [erroFrete, setErroFrete] = useState("");
   const totalComFrete = freteSelecionado ? subtotal + freteSelecionado.preco : subtotal;
+
+  useEffect(() => {
+    if (opcoesFrete.length === 0 || itens.length === 0) return;
+    handleCalcularFrete();
+  }, [itens]);
 
   const handleCalcularFrete = async () => {
     const cep = cepFrete.replace(/\D/g, "");
