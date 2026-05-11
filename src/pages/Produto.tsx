@@ -30,6 +30,7 @@ export default function Produto() {
   const [cepFrete, setCepFrete] = useState("");
   const [opcoesFrete, setOpcoesFrete] = useState<FreteOpcao[]>([]);
   const [calculandoFrete, setCalculandoFrete] = useState(false);
+  const [erroFrete, setErroFrete] = useState("");
   const { adicionarProduto } = useCart();
 
   const productId = params?.id || "";
@@ -49,8 +50,9 @@ export default function Produto() {
   const calcularFreteProduto = async () => {
     if (!produto || cepFrete.replace(/\D/g, "").length < 8) return;
     setCalculandoFrete(true);
+    setErroFrete("");
     const dim = produto.dimensoes || { altura: 0, largura: 0, comprimento: 0 };
-    const results = await calcularFrete(
+    const result = await calcularFrete(
       cepFrete,
       config.frete.cepOrigem,
       [
@@ -66,7 +68,8 @@ export default function Produto() {
       ],
       config.frete.tokenMelhorEnvio,
     );
-    setOpcoesFrete(results);
+    setOpcoesFrete(result.opcoes);
+    setErroFrete(result.erro || "");
     setCalculandoFrete(false);
   };
 
@@ -320,6 +323,7 @@ export default function Produto() {
                     ))}
                   </div>
                 )}
+                {erroFrete && <p className="mt-2 text-xs text-red-500">{erroFrete}</p>}
                 {!config.frete?.tokenMelhorEnvio && (
                   <p className="mt-2 text-xs text-muted-foreground">
                     Configure o token Melhor Envio no admin para calcular fretes reais

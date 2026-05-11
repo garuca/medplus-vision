@@ -34,12 +34,14 @@ export default function Carrinho() {
   const { config } = useAdminStorage();
   const [cepFrete, setCepFrete] = useState("");
   const [calculandoFrete, setCalculandoFrete] = useState(false);
+  const [erroFrete, setErroFrete] = useState("");
   const totalComFrete = freteSelecionado ? subtotal + freteSelecionado.preco : subtotal;
 
   const handleCalcularFrete = async () => {
     const cep = cepFrete.replace(/\D/g, "");
     if (cep.length < 8 || !config.frete.tokenMelhorEnvio) return;
     setCalculandoFrete(true);
+    setErroFrete("");
     const products = itens.map((item) => {
       const dim = item.produto.dimensoes || { altura: 0, largura: 0, comprimento: 0 };
       return {
@@ -52,13 +54,14 @@ export default function Carrinho() {
         insurance_value: item.produto.precoPromocional || item.produto.preco,
       };
     });
-    const results = await calcularFrete(
+    const result = await calcularFrete(
       cep,
       config.frete.cepOrigem,
       products,
       config.frete.tokenMelhorEnvio,
     );
-    setOpcoesFrete(results);
+    setOpcoesFrete(result.opcoes);
+    setErroFrete(result.erro || "");
     setFreteSelecionado(null);
     setCalculandoFrete(false);
   };
@@ -235,6 +238,7 @@ export default function Carrinho() {
                   </div>
                 )}
 
+                {erroFrete && <p className="mt-2 text-xs text-red-500">{erroFrete}</p>}
                 {!config.frete?.tokenMelhorEnvio && (
                   <p className="mt-2 text-xs text-muted-foreground">Configure o frete no admin</p>
                 )}
