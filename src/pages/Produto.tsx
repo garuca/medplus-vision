@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Minus,
   Plus,
-  Heart,
   Share2,
   Check,
   MessageCircle,
@@ -46,6 +45,28 @@ export default function Produto() {
       `https://api.whatsapp.com/send/?phone=5562994896602?text=${encodeURIComponent(msg)}`,
       "_blank",
     );
+  };
+
+  const handleCompartilhar = async () => {
+    if (!produto?.nome) return;
+    const precoFormatado = formatarPreco(produto.precoPromocional || produto.preco);
+    const shareData = {
+      title: `MedPlus: ${produto.nome}`,
+      text: `Veja este produto: ${produto.nome} - R$ ${precoFormatado}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: copiar para clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copiado para a área de transferência!');
+      }
+    } catch (err) {
+      console.error('Erro ao compartilhar:', err);
+    }
   };
 
   const calcularFreteProduto = async () => {
@@ -259,10 +280,11 @@ export default function Produto() {
                 >
                   <ShoppingCart className="h-5 w-5" /> Adicionar ao Carrinho
                 </button>
-                <button className="glass-card p-3 rounded-full hover:bg-red-50">
-                  <Heart className="h-5 w-5" />
-                </button>
-                <button className="glass-card p-3 rounded-full hover:bg-blue-50">
+                <button 
+                  onClick={handleCompartilhar}
+                  className="glass-card p-3 rounded-full hover:bg-blue-50"
+                  title="Compartilhar produto"
+                >
                   <Share2 className="h-5 w-5" />
                 </button>
               </div>
