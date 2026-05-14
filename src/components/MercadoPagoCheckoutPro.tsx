@@ -46,26 +46,21 @@ export function MercadoPagoCheckout({
         return;
       }
 
-      try {
-        const total = items.reduce((acc, item) => {
-          const price = item.produto.precoPromocional || item.produto.preco;
-          return acc + price * item.quantidade;
-        }, 0);
+       try {
+         const origin = window.location.origin;
 
-        const origin = window.location.origin;
+         const successUrl = orderId ? `${origin}/success?order=${orderId}` : `${origin}/success`;
 
-        const successUrl = orderId ? `${origin}/success?order=${orderId}` : `${origin}/success`;
-
-        const body = {
-          items: [
-            {
-              id: "cart-total",
-              title: "Compra na MedPlus Vision",
-              description: `Pagamento de ${items.length} itens`,
-              quantity: 1,
-              unit_price: total,
-            },
-          ],
+         const body = {
+           items: [
+             {
+               id: "cart-total",
+               title: "Compra na MedPlus Vision",
+               description: `Pagamento de ${items.length} itens`,
+               quantity: 1,
+               unit_price: amount,
+             },
+           ],
           payer: {
             email: customerEmail,
           },
