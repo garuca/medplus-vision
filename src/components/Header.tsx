@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useEffect, useState, useRef } from "react";
 import {
   Menu,
@@ -11,6 +11,7 @@ import {
   ChevronDown,
   LogOut,
 } from "lucide-react";
+import { formatarPreco } from "../lib/format";
 import { placeholderImages } from "../lib/images";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
@@ -35,6 +36,7 @@ const links = [
 ] as const;
 
 export function Header() {
+  const [, setLocation] = useLocation();
   const { categorias } = useCategorias();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -58,7 +60,7 @@ export function Header() {
     e.preventDefault();
     setShowSugestoes(false);
     if (search.trim()) {
-      window.location.href = `/loja?busca=${encodeURIComponent(search)}`;
+      setLocation(`/loja?busca=${encodeURIComponent(search)}`);
     }
   };
 
@@ -198,7 +200,7 @@ export function Header() {
                             {produto.nome}
                           </p>
                           <p className="text-xs text-cyan-600 font-semibold">
-                            R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                            R$ {formatarPreco(Number(produto.preco))}
                           </p>
                         </div>
                       </Link>
@@ -297,7 +299,7 @@ export function Header() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">{produto.nome}</p>
                         <p className="text-xs text-cyan-600 font-semibold">
-                          R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(Number(produto.preco))}
                         </p>
                       </div>
                     </Link>

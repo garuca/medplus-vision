@@ -19,6 +19,7 @@ import {
 import { useState, useMemo } from "react";
 import { useProdutos } from "../hooks/useProdutos";
 import { useCategorias } from "../hooks/useCategorias";
+import { formatarPreco } from "../lib/format";
 import { useCart } from "../context/CartContext";
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -166,15 +167,15 @@ export default function Categoria() {
                     {product.precoPromocional ? (
                       <>
                         <span className="text-xs text-muted-foreground line-through">
-                          R$ {product.preco.toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(product.preco)}
                         </span>
                         <div className="text-lg font-bold text-primary">
-                          R$ {product.precoPromocional.toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(product.precoPromocional)}
                         </div>
                       </>
                     ) : (
                       <span className="text-lg font-bold text-primary">
-                        R$ {product.preco.toFixed(2).replace(".", ",")}
+                        R$ {formatarPreco(product.preco)}
                       </span>
                     )}
                   </div>

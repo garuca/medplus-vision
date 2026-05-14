@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { carregarPedidosUsuario } from "../lib/pedidos";
+import { formatarPreco } from "../lib/format";
 import type { Pedido } from "../types/admin";
 
 const statusConfig: Record<string, { label: string; icon: any; color: string }> = {
@@ -115,8 +116,7 @@ export default function MeusPedidos() {
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {pedido.produtos.length} item(ns) — R${" "}
-                        {pedido.total.toFixed(2).replace(".", ",")}
+                        {pedido.produtos.length} item(ns) — R$ {formatarPreco(pedido.total)}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(pedido.createdAt).toLocaleDateString("pt-BR")} — Pagamento:{" "}
@@ -190,7 +190,7 @@ export default function MeusPedidos() {
                         <p className="text-xs text-muted-foreground">Qtd: {produto.quantidade}</p>
                       </div>
                       <p className="text-sm font-medium">
-                        R$ {(produto.preco * produto.quantidade).toFixed(2).replace(".", ",")}
+                        R$ {formatarPreco(produto.preco * produto.quantidade)}
                       </p>
                     </div>
                   ))}
@@ -201,7 +201,7 @@ export default function MeusPedidos() {
                 <div className="flex justify-between">
                   <p className="font-medium">Total</p>
                   <p className="text-xl font-bold text-primary">
-                    R$ {selectedPedido.total.toFixed(2).replace(".", ",")}
+                    R$ {formatarPreco(selectedPedido.total)}
                   </p>
                 </div>
               </div>

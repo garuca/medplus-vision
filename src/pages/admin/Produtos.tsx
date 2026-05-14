@@ -1,6 +1,19 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Package, Plus, Search, Edit2, Trash2, Eye, MoreVertical, Filter, ChevronDown, X, Image } from "lucide-react";
+import {
+  Package,
+  Plus,
+  Search,
+  Edit2,
+  Trash2,
+  Eye,
+  MoreVertical,
+  Filter,
+  ChevronDown,
+  X,
+  Image,
+} from "lucide-react";
+import { formatarPreco } from "../../lib/format";
 import { AdminLayout } from "../../components/AdminLayout";
 import { useAdminStorage } from "../../hooks/useAdminStorage";
 import type { Produto } from "../../types/admin";
@@ -14,9 +27,12 @@ export default function AdminProdutos() {
   const [deleteModal, setDeleteModal] = useState<Produto | null>(null);
 
   const filteredProdutos = produtos.filter((p) => {
-    const matchesSearch = p.nome.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch =
+      p.nome.toLowerCase().includes(search.toLowerCase()) ||
+      p.sku.toLowerCase().includes(search.toLowerCase());
     const matchesCategoria = !categoriaFilter || p.categoria === categoriaFilter;
-    const matchesStatus = !statusFilter || (statusFilter === "ativos" ? p.ativo !== false : p.ativo === false);
+    const matchesStatus =
+      !statusFilter || (statusFilter === "ativos" ? p.ativo !== false : p.ativo === false);
     return matchesSearch && matchesCategoria && matchesStatus;
   });
 
@@ -80,10 +96,16 @@ export default function AdminProdutos() {
               <input type="file" accept=".json" onChange={handleImport} className="hidden" />
               Importar
             </label>
-            <button onClick={handleExport} className="btn-secondary px-4 py-2 rounded-lg font-medium text-sm">
+            <button
+              onClick={handleExport}
+              className="btn-secondary px-4 py-2 rounded-lg font-medium text-sm"
+            >
               Exportar
             </button>
-            <Link href="/admin/produtos/novo" className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+            <Link
+              href="/admin/produtos/novo"
+              className="btn-primary px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2"
+            >
               <Plus className="h-4 w-4" /> Novo Produto
             </Link>
           </div>
@@ -107,7 +129,9 @@ export default function AdminProdutos() {
               className={`btn-secondary px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 ${showFilters ? "border-primary text-primary" : ""}`}
             >
               <Filter className="h-4 w-4" /> Filtros
-              {(categoriaFilter || statusFilter) && <span className="h-2 w-2 rounded-full bg-primary"></span>}
+              {(categoriaFilter || statusFilter) && (
+                <span className="h-2 w-2 rounded-full bg-primary"></span>
+              )}
             </button>
           </div>
 
@@ -122,7 +146,9 @@ export default function AdminProdutos() {
                 >
                   <option value="">Todas</option>
                   {categorias.map((c) => (
-                    <option key={c.id} value={c.nome}>{c.nome}</option>
+                    <option key={c.id} value={c.nome}>
+                      {c.nome}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -168,28 +194,47 @@ export default function AdminProdutos() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-800">
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Produto</th>
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3 hidden md:table-cell">Categoria</th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Produto
+                    </th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3 hidden md:table-cell">
+                      Categoria
+                    </th>
                     <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Preço</th>
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3 hidden md:table-cell">Estoque</th>
-                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">Status</th>
-                    <th className="text-right text-xs font-medium text-gray-400 px-4 py-3">Ações</th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3 hidden md:table-cell">
+                      Estoque
+                    </th>
+                    <th className="text-left text-xs font-medium text-gray-400 px-4 py-3">
+                      Status
+                    </th>
+                    <th className="text-right text-xs font-medium text-gray-400 px-4 py-3">
+                      Ações
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredProdutos.map((produto) => (
-                    <tr key={produto.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                    <tr
+                      key={produto.id}
+                      className="border-b border-gray-800/50 hover:bg-gray-800/30"
+                    >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           {produto.imagemPrincipal ? (
-                            <img src={produto.imagemPrincipal} alt={produto.nome} className="h-12 w-12 rounded-lg object-cover" />
+                            <img
+                              src={produto.imagemPrincipal}
+                              alt={produto.nome}
+                              className="h-12 w-12 rounded-lg object-cover"
+                            />
                           ) : (
                             <div className="h-12 w-12 rounded-lg bg-gray-800 flex items-center justify-center">
                               <Image className="h-6 w-6 text-gray-600" />
                             </div>
                           )}
                           <div>
-                            <p className="font-medium text-white truncate max-w-[200px]">{produto.nome}</p>
+                            <p className="font-medium text-white truncate max-w-[200px]">
+                              {produto.nome}
+                            </p>
                             <p className="text-xs text-gray-500">SKU: {produto.sku}</p>
                           </div>
                         </div>
@@ -199,11 +244,11 @@ export default function AdminProdutos() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="text-white font-medium">
-                          R$ {produto.preco.toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(produto.preco)}
                         </span>
                         {produto.precoOriginal && produto.precoOriginal > produto.preco && (
                           <span className="ml-2 text-xs text-gray-500 line-through">
-                            R$ {produto.precoOriginal.toFixed(2).replace(".", ",")}
+                            R$ {formatarPreco(produto.precoOriginal)}
                           </span>
                         )}
                       </td>
@@ -215,7 +260,9 @@ export default function AdminProdutos() {
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                            produto.ativo === false ? "bg-red-500/20 text-red-400" : "bg-green-500/20 text-green-400"
+                            produto.ativo === false
+                              ? "bg-red-500/20 text-red-400"
+                              : "bg-green-500/20 text-green-400"
                           }`}
                         >
                           {produto.ativo === false ? "Inativo" : "Ativo"}
@@ -259,13 +306,20 @@ export default function AdminProdutos() {
           <div className="glass-card-dark p-6 rounded-2xl max-w-sm w-full">
             <h3 className="text-xl font-bold text-white mb-2">Excluir Produto?</h3>
             <p className="text-gray-400 mb-6">
-              Tem certeza que deseja excluir <span className="text-white">{deleteModal.nome}</span>? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir <span className="text-white">{deleteModal.nome}</span>?
+              Esta ação não pode ser desfeita.
             </p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteModal(null)} className="flex-1 btn-secondary py-2.5 rounded-xl">
+              <button
+                onClick={() => setDeleteModal(null)}
+                className="flex-1 btn-secondary py-2.5 rounded-xl"
+              >
                 Cancelar
               </button>
-              <button onClick={handleDelete} className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-medium">
+              <button
+                onClick={handleDelete}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-medium"
+              >
                 Excluir
               </button>
             </div>

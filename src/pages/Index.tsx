@@ -33,6 +33,7 @@ import { useProdutos } from "../hooks/useProdutos";
 import { useCategorias } from "../hooks/useCategorias";
 import { placeholderImages } from "../lib/images";
 import { SectionTitle } from "../components/SectionTitle";
+import { formatarPreco } from "../lib/format";
 import { useCart } from "../context/CartContext";
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -292,22 +293,22 @@ export default function Index() {
                     {product.precoPromocional ? (
                       <>
                         <span className="text-xs text-muted-foreground line-through">
-                          R$ {product.preco.toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(product.preco)}
                         </span>
                         <div>
                           <span className="text-lg font-bold text-primary">
-                            R$ {product.precoPromocional.toFixed(2).replace(".", ",")}
+                            R$ {formatarPreco(product.precoPromocional)}
                           </span>
                           <span className="ml-1 text-xs text-green-600">à vista</span>
                         </div>
                         <span className="text-xs text-muted-foreground">
                           ou {Math.ceil(product.precoPromocional / 2)}x de R${" "}
-                          {(product.precoPromocional / 2).toFixed(2).replace(".", ",")}
+                          {formatarPreco(product.precoPromocional / 2)}
                         </span>
                       </>
                     ) : (
                       <span className="text-lg font-bold text-primary">
-                        R$ {product.preco.toFixed(2).replace(".", ",")}
+                        R$ {formatarPreco(product.preco)}
                       </span>
                     )}
                   </div>
@@ -392,7 +393,7 @@ export default function Index() {
                   </Link>
                   <div className="mt-2">
                     <span className="text-lg font-bold text-primary">
-                      R$ {product.preco.toFixed(2).replace(".", ",")}
+                      R$ {formatarPreco(product.preco)}
                     </span>
                   </div>
                 </div>

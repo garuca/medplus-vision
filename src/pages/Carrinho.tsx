@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAdminStorage } from "../hooks/useAdminStorage";
+import { formatarPreco } from "../lib/format";
 import { calcularFrete, formatarFrete } from "../lib/frete";
 import type { FreteOpcao } from "../lib/frete";
 
@@ -181,14 +182,11 @@ export default function Carrinho() {
                     <div className="text-right">
                       {item.produto.precoPromocional ? (
                         <p className="font-bold text-primary">
-                          R${" "}
-                          {(item.produto.precoPromocional * item.quantidade)
-                            .toFixed(2)
-                            .replace(".", ",")}
+                          R$ {formatarPreco(item.produto.precoPromocional * item.quantidade)}
                         </p>
                       ) : (
                         <p className="font-bold text-primary">
-                          R$ {(item.produto.preco * item.quantidade).toFixed(2).replace(".", ",")}
+                          R$ {formatarPreco(item.produto.preco * item.quantidade)}
                         </p>
                       )}
                     </div>
@@ -257,7 +255,11 @@ export default function Carrinho() {
                   </div>
                 )}
 
-                {erroFrete && <p className="mt-2 text-xs text-red-500">{erroFrete}</p>}
+                {erroFrete && (
+                  <pre className="mt-2 text-xs text-red-500 whitespace-pre-wrap font-sans">
+                    {erroFrete}
+                  </pre>
+                )}
                 {!config.frete?.tokenMelhorEnvio && (
                   <p className="mt-2 text-xs text-muted-foreground">Configure o frete no admin</p>
                 )}
@@ -266,7 +268,7 @@ export default function Carrinho() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal ({totaleItens} itens)</span>
-                  <span>R$ {subtotal.toFixed(2).replace(".", ",")}</span>
+                  <span>R$ {formatarPreco(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Frete</span>
@@ -277,9 +279,7 @@ export default function Carrinho() {
                 <hr className="my-3" />
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span className="text-primary">
-                    R$ {totalComFrete.toFixed(2).replace(".", ",")}
-                  </span>
+                  <span className="text-primary">R$ {formatarPreco(totalComFrete)}</span>
                 </div>
               </div>
 

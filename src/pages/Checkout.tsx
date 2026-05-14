@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { formatarPreco } from "../lib/format";
 import { formatarFrete } from "../lib/frete";
 import { MercadoPagoCheckout, MercadoPagoBadge } from "../components/MercadoPagoCheckoutPro";
 import { salvarPedido, atualizarPagamentoPedido } from "../lib/pedidos";
@@ -176,7 +177,7 @@ export default function Checkout() {
     const freteStr = freteSelecionado
       ? `\n*Frete:* ${freteSelecionado.servico} - ${formatarFrete(freteSelecionado.preco)} (${freteSelecionado.prazo} dias)`
       : "";
-    const msg = `*NOVO PEDIDO - ${codigoPedido}*\n\n*Itens:*\n${itensLista}\n\n*Subtotal:* R$ ${subtotal.toFixed(2)}${freteStr}\n*Total:* R$ ${totalComFrete.toFixed(2)}\n\n*Cliente:* ${dados.nome}\n${dados.email}\n${dados.telefone}\n${docLabel}: ${dados.documento}\n\n*Endereço:* ${dados.endereco}, ${dados.numero} - ${dados.bairro}, ${dados.cidade}-${dados.estado}`;
+    const msg = `*NOVO PEDIDO - ${codigoPedido}*\n\n*Itens:*\n${itensLista}\n\n*Subtotal:* R$ ${formatarPreco(subtotal)}${freteStr}\n*Total:* R$ ${formatarPreco(totalComFrete)}\n\n*Cliente:* ${dados.nome}\n${dados.email}\n${dados.telefone}\n${docLabel}: ${dados.documento}\n\n*Endereço:* ${dados.endereco}, ${dados.numero} - ${dados.bairro}, ${dados.cidade}-${dados.estado}`;
     window.open(
       `https://api.whatsapp.com/send/?phone=5562994896602&text=${encodeURIComponent(msg)}`,
       "_blank",
@@ -238,8 +239,7 @@ export default function Checkout() {
     setLocation(`/success?order=${orderId}`);
   };
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLoginSubmit = async () => {
     setLoginLoading(true);
     setLoginErro("");
     const { error } = await signIn(loginEmail, loginSenha);
@@ -353,7 +353,7 @@ export default function Checkout() {
                           Entre para preencher automaticamente
                         </p>
                       </div>
-                      <form onSubmit={handleLoginSubmit} className="flex gap-2 items-end">
+                      <div className="flex gap-2 items-end">
                         <div className="flex gap-1">
                           <input
                             type="email"
@@ -371,13 +371,14 @@ export default function Checkout() {
                           />
                         </div>
                         <button
-                          type="submit"
+                          type="button"
+                          onClick={handleLoginSubmit}
                           disabled={loginLoading || !loginEmail || !loginSenha}
                           className="px-3 py-1.5 bg-primary text-white text-sm rounded-lg disabled:opacity-50"
                         >
                           {loginLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
                         </button>
-                      </form>
+                      </div>
                     </div>
                     {loginErro && <p className="text-xs text-red-500 mt-2">{loginErro}</p>}
                     <p className="text-xs text-muted-foreground mt-2">
@@ -690,9 +691,9 @@ export default function Checkout() {
                     </span>
                     <span>
                       R${" "}
-                      {((item.produto.precoPromocional || item.produto.preco) * item.quantidade)
-                        .toFixed(2)
-                        .replace(".", ",")}
+                      {formatarPreco(
+                        (item.produto.precoPromocional || item.produto.preco) * item.quantidade,
+                      )}
                     </span>
                   </div>
                 ))}
@@ -706,9 +707,7 @@ export default function Checkout() {
               )}
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-primary">
-                  R$ {totalComFrete.toFixed(2).replace(".", ",")}
-                </span>
+                <span className="text-primary">R$ {formatarPreco(totalComFrete)}</span>
               </div>
               {dados.pagamento !== "mercadopago" && (
                 <button

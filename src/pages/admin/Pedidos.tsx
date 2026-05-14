@@ -11,6 +11,7 @@ import {
   CreditCard,
   AlertCircle,
 } from "lucide-react";
+import { formatarPreco } from "../../lib/format";
 import { AdminLayout } from "../../components/AdminLayout";
 import { useAdminStorage } from "../../hooks/useAdminStorage";
 
@@ -163,7 +164,7 @@ export default function AdminPedidos() {
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-white font-medium">
-                            R$ {pedido.total.toFixed(2).replace(".", ",")}
+                            R$ {formatarPreco(pedido.total)}
                           </span>
                         </td>
                         <td className="px-4 py-3">
@@ -292,7 +293,7 @@ export default function AdminPedidos() {
                         <p className="text-xs text-gray-400">Qtd: {produto.quantidade}</p>
                       </div>
                       <p className="text-white font-medium">
-                        R$ {(produto.preco * produto.quantidade).toFixed(2).replace(".", ",")}
+                        R$ {formatarPreco(produto.preco * produto.quantidade)}
                       </p>
                     </div>
                   ))}
@@ -303,7 +304,7 @@ export default function AdminPedidos() {
                 <div className="flex justify-between">
                   <p className="text-gray-400">Total</p>
                   <p className="text-xl font-bold text-white">
-                    R$ {selectedPedido.total.toFixed(2).replace(".", ",")}
+                    R$ {formatarPreco(selectedPedido.total)}
                   </p>
                 </div>
               </div>

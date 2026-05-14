@@ -68,13 +68,36 @@ export async function calcularFrete(
 
     if (opcoes.length === 0) {
       console.error("Frete API: response without custom_price", JSON.stringify(data));
-      const errors = (data as any[])
-        .filter((item: any) => item.error)
-        .map((item: any) => `${item.name}: ${item.error}`)
-        .join(" | ");
+      const errorItems = (data as any[]).filter((item: any) => item.error);
+
+      if (errorItems.length > 0) {
+        const grupos: Record<string, string[]> = {};
+        for (const item of errorItems) {
+          const erro = item.error.trim();
+          if (!grupos[erro]) grupos[erro] = [];
+          grupos[erro].push(item.name);
+        }
+
+        const labelMap: Record<string, string> = {
+          "Transportadora não atende este trecho.": "Rota não atendida",
+          "Dimensões do objeto ultrapassam o limite da transportadora.":
+            "Dimensões excedem o limite permitido",
+        };
+
+        const parts = Object.entries(grupos).map(([erro, servicos]) => {
+          const label = labelMap[erro] || erro;
+          return `${label}:\n${servicos.join(", ")}`;
+        });
+
+        return {
+          opcoes: [],
+          erro: ["Nenhuma transportadora disponível para este pedido.", ...parts].join("\n\n"),
+        };
+      }
+
       return {
         opcoes: [],
-        erro: errors || "Nenhuma transportadora disponível para este CEP",
+        erro: "Nenhuma transportadora disponível para este CEP",
       };
     }
 
@@ -85,6 +108,8 @@ export async function calcularFrete(
   }
 }
 
+import { formatarPreco } from "./format";
+
 export function formatarFrete(preco: number): string {
-  return `R$ ${preco.toFixed(2).replace(".", ",")}`;
+  return `R$ ${formatarPreco(preco)}`;
 }

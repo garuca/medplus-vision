@@ -169,7 +169,7 @@ export default function Sobre() {
             <div className="space-y-8">
               {timeline.map((t, i) => (
                 <div
-                  key={t.year}
+                  key={t.year + t.title}
                   className={`flex items-center gap-4 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
                 >
                   <div className="flex-1 glass-card p-4 rounded-xl">

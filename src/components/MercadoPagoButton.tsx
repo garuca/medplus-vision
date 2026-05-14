@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CreditCard } from "lucide-react";
+import { formatarPreco } from "../lib/format";
 
 interface MercadoPagoPaymentFormProps {
   amount: number;
@@ -34,7 +35,7 @@ export function MercadoPagoPaymentForm({ amount, onPayment }: MercadoPagoPayment
       className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
     >
       <CreditCard className="h-4 w-4" />
-      {loading ? "Processando..." : `Pagar R$ ${amount.toFixed(2)}`}
+      {loading ? "Processando..." : `Pagar R$ ${formatarPreco(amount)}`}
     </button>
   );
 }

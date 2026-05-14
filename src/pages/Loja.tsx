@@ -4,11 +4,14 @@ import { useState, useMemo } from "react";
 import { useProdutos } from "../hooks/useProdutos";
 import { useCategorias } from "../hooks/useCategorias";
 import { SectionTitle } from "../components/SectionTitle";
+import { formatarPreco } from "../lib/format";
 import { useCart } from "../context/CartContext";
 
 export default function Loja() {
   const [location] = useLocation();
-  const [busca, setBusca] = useState("");
+  const [busca, setBusca] = useState(
+    () => new URLSearchParams(window.location.search).get("busca") || "",
+  );
   const [ordem, setOrdem] = useState("relevancia");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<Set<string>>(new Set());
@@ -22,7 +25,7 @@ export default function Loja() {
 
   const getProdutoLink = (id: string) => `/produto/${id}`;
 
-  const filtroAtivo = new URLSearchParams(location.split("?")[1] || "").get("filtro");
+  const filtroAtivo = new URLSearchParams(window.location.search).get("filtro");
 
   const marcas = useMemo(() => {
     const set = new Set<string>();
@@ -247,15 +250,15 @@ export default function Loja() {
                         {product.precoPromocional ? (
                           <>
                             <span className="text-xs text-muted-foreground line-through">
-                              R$ {product.preco.toFixed(2).replace(".", ",")}
+                              R$ {formatarPreco(product.preco)}
                             </span>
                             <div className="text-lg font-bold text-primary">
-                              R$ {product.precoPromocional.toFixed(2).replace(".", ",")}
+                              R$ {formatarPreco(product.precoPromocional)}
                             </div>
                           </>
                         ) : (
                           <span className="text-lg font-bold text-primary">
-                            R$ {product.preco.toFixed(2).replace(".", ",")}
+                            R$ {formatarPreco(product.preco)}
                           </span>
                         )}
                       </div>

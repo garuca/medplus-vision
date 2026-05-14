@@ -20,6 +20,7 @@ import {
 import { useCart } from "../context/CartContext";
 import { useProdutoById } from "../hooks/useProdutos";
 import { useAdminStorage } from "../hooks/useAdminStorage";
+import { formatarPreco } from "../lib/format";
 import { calcularFrete, formatarFrete } from "../lib/frete";
 import type { FreteOpcao } from "../lib/frete";
 
@@ -40,7 +41,7 @@ export default function Produto() {
   const handleWhatsApp = () => {
     if (!produto?.nome) return;
     const preco = produto.precoPromocional || produto.preco || 0;
-    const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${preco.toFixed(2)}`;
+    const msg = `Olá, tenho interesse no produto: ${produto.nome}\nQuantidade: ${quantidade}\nValor: R$ ${formatarPreco(preco)}`;
     window.open(
       `https://api.whatsapp.com/send/?phone=5562994896602?text=${encodeURIComponent(msg)}`,
       "_blank",
@@ -167,11 +168,11 @@ export default function Produto() {
 
               <div className="mt-3 flex items-baseline gap-3">
                 <span className="text-2xl font-bold text-primary">
-                  R$ {(produto.precoPromocional || produto.preco).toFixed(2).replace(".", ",")}
+                  R$ {formatarPreco(produto.precoPromocional || produto.preco)}
                 </span>
                 {produto.precoPromocional && (
                   <span className="text-sm text-muted-foreground line-through">
-                    R$ {produto.preco.toFixed(2).replace(".", ",")}
+                    R$ {formatarPreco(produto.preco)}
                   </span>
                 )}
               </div>
@@ -324,7 +325,11 @@ export default function Produto() {
                     ))}
                   </div>
                 )}
-                {erroFrete && <p className="mt-2 text-xs text-red-500">{erroFrete}</p>}
+                {erroFrete && (
+                  <pre className="mt-2 text-xs text-red-500 whitespace-pre-wrap font-sans">
+                    {erroFrete}
+                  </pre>
+                )}
                 {!config.frete?.tokenMelhorEnvio && (
                   <p className="mt-2 text-xs text-muted-foreground">
                     Configure o token Melhor Envio no admin para calcular fretes reais
@@ -378,7 +383,7 @@ export default function Produto() {
                    </div>
                    <h3 className="mt-3 text-sm font-medium line-clamp-2">{p.nome}</h3>
                    <p className="mt-1 font-bold text-primary">
-                     R$ {(p.precoPromocional || p.preco).toFixed(2).replace(".", ",")}
+                      R$ {formatarPreco(p.precoPromocional || p.preco)}
                    </p>
                  </Link>
                ))}
