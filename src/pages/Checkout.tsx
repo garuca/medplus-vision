@@ -666,6 +666,7 @@ export default function Checkout() {
                               items={itens}
                               customerEmail={dados.email}
                               orderId={orderId}
+                              frete={freteSelecionado}
                             />
                           </div>
                         )}

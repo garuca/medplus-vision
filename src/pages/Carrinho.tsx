@@ -285,8 +285,7 @@ export default function Carrinho() {
 
               <button
                 onClick={() => setLocation("/checkout")}
-                disabled={!freteSelecionado}
-                className="mt-6 w-full btn-primary inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-6 w-full btn-primary inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold"
               >
                 Finalizar Compra <ArrowRight className="h-4 w-4" />
               </button>

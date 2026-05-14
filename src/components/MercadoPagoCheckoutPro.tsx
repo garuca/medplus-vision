@@ -3,12 +3,14 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Shield, Loader2 } from "lucide-react";
 import { MP_CONFIG } from "../lib/mercadopago";
 import { ItemCarrinho } from "../context/CartContext";
+import type { FreteOpcao } from "../lib/frete";
 
 interface MercadoPagoCheckoutProps {
   amount: number;
   items: ItemCarrinho[];
   customerEmail?: string;
   orderId?: string;
+  frete?: FreteOpcao | null;
 }
 
 interface MPItem {
@@ -24,6 +26,7 @@ export function MercadoPagoCheckout({
   items,
   customerEmail,
   orderId,
+  frete,
 }: MercadoPagoCheckoutProps) {
   const [loading, setLoading] = useState(true);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
@@ -51,25 +54,33 @@ export function MercadoPagoCheckout({
 
          const successUrl = orderId ? `${origin}/success?order=${orderId}` : `${origin}/success`;
 
-         const body = {
-           items: [
-             {
-               id: "cart-total",
-               title: "Compra na MedPlus Vision",
-               description: `Pagamento de ${items.length} itens`,
-               quantity: 1,
-               unit_price: amount,
-             },
-           ],
-          payer: {
-            email: customerEmail,
-          },
-          back_urls: {
-            success: successUrl,
-            failure: origin + "/checkout?erro=pagamento",
-            pending: origin + "/checkout?status=pending",
-          },
-        };
+         const mpItems: MPItem[] = items.map((item) => ({
+              id: item.produto.id,
+              title: item.produto.nome.slice(0, 40),
+              quantity: item.quantidade,
+              unit_price: item.produto.precoPromocional || item.produto.preco,
+            }));
+
+            if (frete && frete.preco > 0) {
+              mpItems.push({
+                id: "frete",
+                title: `Frete: ${frete.servico}`,
+                quantity: 1,
+                unit_price: frete.preco,
+              });
+            }
+
+            const body = {
+              items: mpItems,
+              payer: {
+                email: customerEmail,
+              },
+              back_urls: {
+                success: successUrl,
+                failure: origin + "/checkout?erro=pagamento",
+                pending: origin + "/checkout?status=pending",
+              },
+            };
 
         console.log("MP Request:", JSON.stringify(body, null, 2));
 
@@ -103,7 +114,7 @@ export function MercadoPagoCheckout({
     if (items && items.length > 0 && amount > 0) {
       createPreference();
     }
-  }, [items, amount, customerEmail]);
+  }, [items, amount, customerEmail, frete]);
 
   if (!items || items.length === 0) {
     return null;
